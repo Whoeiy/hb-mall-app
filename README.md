@@ -1,3 +1,9 @@
+# 运行方法
+
+yarn install
+yarn run dev
+---
+# 原文
 ![](static-files/newbee-mall.png)
 
 - [知乎：如何看待慕课网涉嫌抄袭开源项目作为《Java工程师》的终极项目并上线销售？](https://www.zhihu.com/question/464292538)
