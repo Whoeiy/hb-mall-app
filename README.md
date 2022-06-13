@@ -1,7 +1,8 @@
 # 运行方法
 
-yarn install
-yarn run dev
+- yarn install
+- yarn run dev
+
 ---
 # 原文
 ![](static-files/newbee-mall.png)
