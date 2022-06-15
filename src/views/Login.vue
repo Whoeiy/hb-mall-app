@@ -15,8 +15,8 @@
     <div v-if="type == 'login'" class="login-body login">
       <van-form @submit="onSubmit">
         <van-field
-          v-model="username"
-          name="username"
+          v-model="phone"
+          name="phone"
           label="用户名"
           placeholder="用户名"
           :rules="[{ required: true, message: '请填写用户名' }]"
@@ -95,7 +95,7 @@ export default {
   setup() {
     const verifyRef = ref(null)
     const state = reactive({
-      username: '',
+      phone: '',
       password: '',
       username1: '',
       password1: '',
@@ -120,8 +120,8 @@ export default {
       }
       if (state.type == 'login') {
         const { data } = await login({
-          "loginName": values.username,
-          "passwordMd5": md5(values.password)
+          "phone": values.phone,
+          "password": md5(values.password)
         })
         setLocal('token', data)
         // 需要刷新页面，否则 axios.js 文件里的 token 不会被重置
@@ -129,7 +129,7 @@ export default {
       } else {
         await register({
           "loginName": values.username1,
-          "password": values.password1
+          "password": md5(values.password1)
         })
         Toast.success('注册成功')
         state.type = 'login'

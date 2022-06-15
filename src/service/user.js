@@ -18,11 +18,11 @@ export function EditUserInfo(params) {
 }
 
 export function login(params) {
-  return axios.post('/user/login', params);
+  return axios.post('/mall/a/user/login', params);
 }
 
 export function logout() {
-  return axios.post('/user/logout')
+  return axios.post('/mall/a/user/logout')
 }
 
 export function register(params) {
