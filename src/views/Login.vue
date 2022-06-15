@@ -10,16 +10,29 @@
 
 <template>
   <div class="login">
-    <s-header :name="type == 'login' ? '登录' : '注册'" :back="'/home'"></s-header>
-    <img class="logo" src="https://s.yezgea02.com/1604045825972/newbee-mall-vue3-app-logo.png" alt="">
+    <s-header
+      :name="type == 'login' ? '登录' : '注册'"
+      :back="'/home'"
+    ></s-header>
+    <img
+      class="logo"
+      src="https://s.yezgea02.com/1604045825972/newbee-mall-vue3-app-logo.png"
+      alt=""
+    />
     <div v-if="type == 'login'" class="login-body login">
       <van-form @submit="onSubmit">
         <van-field
           v-model="phone"
           name="phone"
-          label="用户名"
-          placeholder="用户名"
-          :rules="[{ required: true, message: '请填写用户名' }]"
+          label="手机号"
+          placeholder="手机号"
+          :rules="[{ required: true, message: '请填写手机号' },
+          {
+              validator: (val) => {
+                return val.length === 8 || val.length === 11 ;
+              },
+              message: '请输入正确的手机号码',
+            },]"
         />
         <van-field
           v-model="password"
@@ -40,17 +53,19 @@
             <vue-img-verify ref="verifyRef" />
           </template>
         </van-field>
-        <div style="margin: 16px;">
+        <div style="margin: 16px">
           <div class="link-register" @click="toggle('register')">立即注册</div>
-          <van-button round block color="#1baeae" native-type="submit">登录</van-button>
+          <van-button round block color="#1baeae" native-type="submit"
+            >登录</van-button
+          >
         </div>
       </van-form>
     </div>
     <div v-else class="login-body register">
       <van-form @submit="onSubmit">
         <van-field
-          v-model="username1"
-          name="username1"
+          v-model="name"
+          name="name"
           label="用户名"
           placeholder="用户名"
           :rules="[{ required: true, message: '请填写用户名' }]"
@@ -64,6 +79,45 @@
           :rules="[{ required: true, message: '请填写密码' }]"
         />
         <van-field
+          v-model="password2"
+          type="password"
+          name="password2"
+          label="再次填写密码"
+          placeholder="密码"
+          :rules="[{ required: true, message: '请再次填写密码' }]"
+        />
+        <van-field
+          v-model="phone"
+          type="phone"
+          name="phone"
+          label="手机号"
+          placeholder="手机号"
+          :rules="[
+            { required: true, message: '请填写手机号' },
+            {
+              validator: (val) => {
+                return val.length === 8 || val.length === 11 ;
+              },
+              message: '请输入正确的手机号码',
+            },
+          ]"
+        />
+        <van-field
+          v-model="email"
+          type="email"
+          name="email"
+          label="邮箱"
+          placeholder="邮箱"
+          :rules="[
+            { required: true, message: '请填写邮箱' },
+            {
+              pattern:
+                /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/,
+              message: '邮箱格式错误！',
+            },
+          ]"
+        />
+        <van-field
           center
           clearable
           label="验证码"
@@ -74,9 +128,11 @@
             <vue-img-verify ref="verifyRef" />
           </template>
         </van-field>
-        <div style="margin: 16px;">
+        <div style="margin: 16px">
           <div class="link-login" @click="toggle('login')">已有登录账号</div>
-          <van-button round block color="#1baeae" native-type="submit">注册</van-button>
+          <van-button round block color="#1baeae" native-type="submit"
+            >注册</van-button
+          >
         </div>
       </van-form>
     </div>
@@ -84,138 +140,146 @@
 </template>
 
 <script>
-import { reactive, ref, toRefs } from 'vue'
-import sHeader from '@/components/SimpleHeader'
-import vueImgVerify from '@/components/VueImageVerify'
-import { login, register } from '@/service/user'
-import { setLocal } from '@/common/js/utils'
-import md5 from 'js-md5'
-import { Toast } from 'vant'
+import { reactive, ref, toRefs } from "vue";
+import sHeader from "@/components/SimpleHeader";
+import vueImgVerify from "@/components/VueImageVerify";
+import { login, register } from "@/service/user";
+import { setLocal } from "@/common/js/utils";
+import md5 from "js-md5";
+import { Toast } from "vant";
 export default {
   setup() {
-    const verifyRef = ref(null)
+    const verifyRef = ref(null);
     const state = reactive({
-      phone: '',
-      password: '',
-      username1: '',
-      password1: '',
-      type: 'login',
-      imgCode: '',
-      verify: ''
-    })
+      phone: "",
+      password: "",
+      name: "",
+      password1: "",
+      password2: "",
+      email: "",
+      type: "login",
+      imgCode: "",
+      verify: "",
+    });
 
     // 切换登录和注册两种模式
     const toggle = (v) => {
-      state.type = v
-      state.verify = ''
-    }
+      state.type = v;
+      state.verify = "";
+    };
 
     // 提交登录或注册表单
     const onSubmit = async (values) => {
-      console.log('verifyRef.value.imgCode', verifyRef.value.imgCode)
-      state.imgCode = verifyRef.value.imgCode || ''
+      console.log("verifyRef.value.imgCode", verifyRef.value.imgCode);
+      state.imgCode = verifyRef.value.imgCode || "";
       if (state.verify.toLowerCase() != state.imgCode.toLowerCase()) {
-        Toast.fail('验证码有误')
-        return
+        Toast.fail("验证码有误");
+        return;
       }
-      if (state.type == 'login') {
+      if (state.password1 != state.password2) {
+        Toast.fail("两次密码填写不一致");
+        return;
+      }
+      if (state.type == "login") {
         const { data } = await login({
-          "phone": values.phone,
-          "password": md5(values.password)
-        })
-        setLocal('token', data)
+          phone: values.phone,
+          password: md5(values.password),
+        });
+        setLocal("token", data);
         // 需要刷新页面，否则 axios.js 文件里的 token 不会被重置
-        window.location.href = '/'
+        window.location.href = "/";
       } else {
         await register({
-          "loginName": values.username1,
-          "password": md5(values.password1)
-        })
-        Toast.success('注册成功')
-        state.type = 'login'
-        state.verify = ''
+          name: values.name,
+          password: md5(values.password1),
+          phone: values.phone,
+          email: values.email,
+        });
+        Toast.success("注册成功");
+        state.type = "login";
+        state.verify = "";
       }
-    }
+    };
 
     return {
       ...toRefs(state),
       toggle,
       onSubmit,
-      verifyRef
-    }
+      verifyRef,
+    };
   },
   components: {
     sHeader,
-    vueImgVerify
-  }
-}
+    vueImgVerify,
+  },
+};
 </script>
 
 <style lang="less">
+.login {
+  .logo {
+    width: 120px;
+    height: 120px;
+    display: block;
+    margin: 80px auto 20px;
+  }
+  .login-body {
+    padding: 0 20px;
+  }
   .login {
-    .logo {
-      width: 120px;
-      height: 120px;
-      display: block;
-      margin: 80px auto 20px;
+    .link-register {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #1989fa;
+      display: inline-block;
     }
-    .login-body {
-      padding: 0 20px;
+  }
+  .register {
+    .link-login {
+      font-size: 14px;
+      margin-bottom: 20px;
+      color: #1989fa;
+      display: inline-block;
     }
-    .login {
-      .link-register {
-        font-size: 14px;
-        margin-bottom: 20px;
-        color: #1989fa;
-        display: inline-block;
-      }
+  }
+  .verify-bar-area {
+    margin-top: 24px;
+    .verify-left-bar {
+      border-color: #1baeae;
     }
-    .register {
-      .link-login {
-        font-size: 14px;
-        margin-bottom: 20px;
-        color: #1989fa;
-        display: inline-block;
-      }
+    .verify-move-block {
+      background-color: #1baeae;
+      color: #fff;
     }
-    .verify-bar-area {
-      margin-top: 24px;
-      .verify-left-bar {
-        border-color: #1baeae;
-      }
-      .verify-move-block {
-        background-color: #1baeae;
-        color: #fff;
-      }
+  }
+  .verify {
+    > div {
+      width: 100%;
     }
-    .verify {
-      >div {
-        width: 100%;
+    display: flex;
+    justify-content: center;
+    .cerify-code-panel {
+      margin-top: 16px;
+    }
+    .verify-code {
+      width: 40% !important;
+      float: left !important;
+    }
+    .verify-code-area {
+      float: left !important;
+      width: 54% !important;
+      margin-left: 14px !important;
+      .varify-input-code {
+        width: 90px;
+        height: 38px !important;
+        border: 1px solid #e9e9e9;
+        padding-left: 10px;
+        font-size: 16px;
       }
-      display: flex;
-      justify-content: center;
-      .cerify-code-panel {
-        margin-top: 16px;
-      }
-      .verify-code {
-        width: 40%!important;
-        float: left!important;
-      }
-      .verify-code-area {
-        float: left!important;
-        width: 54%!important;
-        margin-left: 14px!important;
-        .varify-input-code {
-          width: 90px;
-          height: 38px!important;
-          border: 1px solid #e9e9e9;
-          padding-left: 10px;
-          font-size: 16px;
-        }
-        .verify-change-area {
-          line-height: 44px;
-        }
+      .verify-change-area {
+        line-height: 44px;
       }
     }
   }
+}
 </style>

@@ -26,6 +26,6 @@ export function logout() {
 }
 
 export function register(params) {
-  return axios.post('/user/register', params);
+  return axios.post('/mall/a/user/register', params);
 }
 
