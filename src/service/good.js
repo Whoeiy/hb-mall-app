@@ -16,6 +16,9 @@ export function getDetail(id) {
 export function getCategory() {
   return axios.get('/categories');
 }
+export function getLabels() {
+  return axios.get('/label');
+}
 
 export function search(params) {
   return axios.get('/search', { params });

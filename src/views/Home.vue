@@ -1,21 +1,13 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div>
     <header class="home-header wrap" :class="{'active' : headerScroll}">
       <router-link tag="i" to="./category"><i class="nbicon nbmenu2"></i></router-link>
       <div class="header-search">
-        <span class="app-name">新蜂商城</span>
+        <span class="app-name">HeartBeat365</span>
         <i class="iconfont icon-search"></i>
-        <router-link tag="span" class="search-title" to="./product-list?from=home">山河无恙，人间皆安</router-link>
+        <router-link tag="span" class="search-title" to="./product-list?from=home">搜索心仪礼品</router-link>
       </div>
       <router-link class="login" tag="span" to="./login" v-if="!isLogin">登录</router-link>
       <router-link class="login" tag="span" to="./user" v-else>
@@ -24,8 +16,8 @@
     </header>
     <nav-bar />
     <swiper :list="swiperList"></swiper>
-    <div class="category-list">
-      <div v-for="item in categoryList" v-bind:key="item.categoryId" @click="tips">
+    <div class="label-list">
+      <div v-for="item in labelList" v-bind:key="item.labelId" @click="tips">
         <img :src="item.imgUrl">
         <span>{{item.name}}</span>
       </div>
@@ -34,11 +26,11 @@
       <header class="good-header">新品上线</header>
       <van-skeleton title :row="3" :loading="loading">
         <div class="good-box">
-          <div class="good-item" v-for="item in newGoodses" :key="item.goodsId" @click="goToDetail(item)">
-            <img :src="$filters.prefix(item.goodsCoverImg)" alt="">
+          <div class="good-item" v-for="item in newGifts" :key="item.giftId" @click="goToDetail(item)">
+            <img :src="$filters.prefix(item.giftCoverImg)" alt="">
             <div class="good-desc">
-              <div class="title">{{ item.goodsName }}</div>
-              <div class="price">¥ {{ item.sellingPrice }}</div>
+              <div class="title">{{ item.giftName }}</div>
+              <div class="price">¥ {{ item.originalPrice }}</div>
             </div>
           </div>
         </div>
@@ -48,11 +40,11 @@
       <header class="good-header">热门商品</header>
       <van-skeleton title :row="3" :loading="loading">
         <div class="good-box">
-          <div class="good-item" v-for="item in hots" :key="item.goodsId" @click="goToDetail(item)">
-            <img :src="$filters.prefix(item.goodsCoverImg)" alt="">
+          <div class="good-item" v-for="item in hots" :key="item.giftId" @click="goToDetail(item)">
+            <img :src="$filters.prefix(item.giftCoverImg)" alt="">
             <div class="good-desc">
-              <div class="title">{{ item.goodsName }}</div>
-              <div class="price">¥ {{ item.sellingPrice }}</div>
+              <div class="title">{{ item.giftName }}</div>
+              <div class="price">¥ {{ item.originalPrice }}</div>
             </div>
           </div>
         </div>
@@ -62,11 +54,11 @@
       <header class="good-header">最新推荐</header>
       <van-skeleton title :row="3" :loading="loading">
         <div class="good-box">
-          <div class="good-item" v-for="item in recommends" :key="item.goodsId" @click="goToDetail(item)">
-            <img :src="$filters.prefix(item.goodsCoverImg)" alt="">
+          <div class="good-item" v-for="item in recommends" :key="item.giftId" @click="goToDetail(item)">
+            <img :src="$filters.prefix(item.giftCoverImg)" alt="">
             <div class="good-desc">
-              <div class="title">{{ item.goodsName }}</div>
-              <div class="price">¥ {{ item.sellingPrice }}</div>
+              <div class="title">{{ item.giftName }}</div>
+              <div class="price">¥ {{ item.originalPrice }}</div>
             </div>
           </div>
         </div>
@@ -98,49 +90,25 @@ export default {
       isLogin: false, // 是否已登录
       headerScroll: false, // 滚动透明判断
       hots: [],
-      newGoodses: [],
+      newGifts: [],
       recommends: [],
-      categoryList: [
+      labelList: [
         {
-          name: '新蜂超市',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E8%B6%85%E5%B8%82%402x.png',
-          categoryId: 100001
+          name: '特殊节日',
+          imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4682_600x315.jpg',
+         // labelId: 100001
         }, {
-          name: '新蜂服饰',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E6%9C%8D%E9%A5%B0%402x.png',
-          categoryId: 100003
+          name: '送给谁',
+          imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4471_600x315.jpg',
+       //  labelId: 100003
         }, {
-          name: '全球购',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%85%A8%E7%90%83%E8%B4%AD%402x.png',
-          categoryId: 100002
+          name: '纪念礼物',
+          imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4934_600x315.jpg',
+         // labelId: 100002
         }, {
-          name: '新蜂生鲜',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E7%94%9F%E9%B2%9C%402x.png',
-          categoryId: 100004
-        }, {
-          name: '新蜂到家',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%88%B0%E5%AE%B6%402x.png',
-          categoryId: 100005
-        }, {
-          name: '充值缴费',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%85%85%E5%80%BC%402x.png',
-          categoryId: 100006
-        }, {
-          name: '9.9元拼',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/9.9%402x.png',
-          categoryId: 100007
-        }, {
-          name: '领劵',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E9%A2%86%E5%88%B8%402x.png',
-          categoryId: 100008
-        }, {
-          name: '省钱',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E7%9C%81%E9%92%B1%402x.png',
-          categoryId: 100009
-        }, {
-          name: '全部',
-          imgUrl: 'https://s.yezgea02.com/1604041127880/%E5%85%A8%E9%83%A8%402x.png',
-          categoryId: 100010
+          name: '节日礼物',
+          imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/2284_600x315.jpg',
+        //  labelId: 100004
         }
       ],
       loading: true
@@ -158,9 +126,9 @@ export default {
       });
       const { data } = await getHome()
       state.swiperList = data.carousels
-      state.newGoodses = data.newGoodses
-      state.hots = data.hotGoodses
-      state.recommends = data.recommendGoodses
+      state.newGifts = data.newGifts
+      state.hots = data.hotGifts
+      state.recommends = data.recommendGifts
       state.loading = false
       Toast.clear()
     })
@@ -173,7 +141,7 @@ export default {
     })
 
     const goToDetail = (item) => {
-      router.push({ path: `/product/${item.goodsId}` })
+      router.push({ path: `/product/${item.giftId}` })
     }
 
     const tips = () => {
@@ -192,7 +160,7 @@ export default {
 <style lang="less" scoped >
   @import '../common/style/mixin';
   .home-header {
-      position: fixed;
+     // position: fixed;
       left: 0;
       top: 0;
       .wh(100%, 50px);
@@ -255,7 +223,7 @@ export default {
         }
       }
   }
-  .category-list {
+  .label-list {
     display: flex;
     flex-shrink: 0;
     flex-wrap: wrap;
@@ -264,10 +232,10 @@ export default {
     div {
       display: flex;
       flex-direction: column;
-      width: 20%;
+      width: 50%;
       text-align: center;
       img {
-        .wh(36px, 36px);
+        .wh(150px, 100px);
         margin: 13px auto 8px auto;
       }
     }
