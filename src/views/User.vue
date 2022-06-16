@@ -40,6 +40,9 @@
         <span>关于我们</span>
         <van-icon name="arrow" />
       </li>
+      <van-button round block class="button" @click="logOut()">
+        <span>退出登录</span>
+      </van-button>
     </ul>
     <nav-bar></nav-bar>
   </div>
@@ -49,8 +52,9 @@
 import { reactive, onMounted, toRefs } from 'vue'
 import navBar from '@/components/NavBar'
 import sHeader from '@/components/SimpleHeader'
-import { getUserInfo } from '@/service/user'
+import { getUserInfo, logout } from '@/service/user'
 import { useRouter } from 'vue-router'
+import { removeLocal } from "@/common/js/utils";
 export default {
   components: {
     navBar,
@@ -77,10 +81,18 @@ export default {
       router.push({ path: r, query: query || {} })
     }
 
+    const logOut = () =>{
+        logout();
+        //goTo('/login')
+        removeLocal("token")
+        window.location.href = "/";
+    }
+
     return {
       ...toRefs(state),
       goBack,
-      goTo
+      goTo,
+      logOut
     }
   }
 }
@@ -165,6 +177,11 @@ export default {
           margin-top: 13px;
         }
       }
+      .button {
+          background-color: rgb(221,113,107);
+          color:white;
+      }
+      
     }
   }
 </style>
