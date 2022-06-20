@@ -96,19 +96,19 @@ export default {
         {
           name: '特殊节日',
           imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4682_600x315.jpg',
-         // labelId: 100001
+         labelId: 8
         }, {
           name: '送给谁',
           imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4471_600x315.jpg',
-       //  labelId: 100003
+       labelId:53
         }, {
           name: '纪念礼物',
           imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4934_600x315.jpg',
-         // labelId: 100002
+         labelId: 14
         }, {
           name: '节日礼物',
           imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/2284_600x315.jpg',
-        //  labelId: 100004
+        labelId:20
         }
       ],
       loading: true

@@ -6,7 +6,7 @@
         <i class="nbicon nbfanhui" @click="goHome"></i>
         <div class="header-search">
           <i class="nbicon nbSearch"></i>
-          <router-link tag="span" class="search-title" to="./product-list?from=category">全场50元起步</router-link>
+          <router-link tag="span" class="search-title" to="./product-list?from=category">精品礼物 任君挑选</router-link>
         </div>
         <i class="iconfont icon-More"></i>
       </header>
@@ -33,7 +33,8 @@
                     <div class="category-list" v-for="(products, index) in category.secondLevelCategoryVOS" :key="index">
                       <p class="catogory-title">{{products.categoryName}}</p>
                       <div class="product-item" v-for="(product, index) in products.thirdLevelCategoryVOS" :key="index" @click="selectProduct(product)">
-                        <img src="//s.weituibao.com/1583591077131/%E5%88%86%E7%B1%BB.png" class="product-img"/>
+                      <img class="product-img"  :src="products.categoryIcon"  />
+                        <!--  <img class="product-img" :src="$filters.prefix(category.categoryIcon)" />-->
                         <p v-text="product.categoryName" class="product-title"></p>
                       </div>
                     </div>

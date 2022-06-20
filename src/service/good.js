@@ -14,10 +14,10 @@ export function getDetail(id) {
 }
 
 export function getCategory() {
-  return axios.get('/categories');
+  return axios.get('/mall/a/categories');
 }
 export function getLabels() {
-  return axios.get('/label');
+  return axios.get('/mall/a/labels');
 }
 
 export function search(params) {
