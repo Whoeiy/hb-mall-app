@@ -6,7 +6,7 @@
         <i class="nbicon nbfanhui" @click="goHome"></i>
         <div class="header-search">
           <i class="nbicon nbSearch"></i>
-          <router-link tag="span" class="search-title" to="./product-list?from=label">全场50元起步</router-link>
+          <router-link tag="span" class="search-title" to="./product-list?from=label">输入礼品标签 选购心仪礼物</router-link>
         </div>
         <i class="iconfont icon-More"></i>
       </header>
@@ -30,11 +30,11 @@
                 <template v-for="(label, index) in labelData">
                   <div class="swiper-slide" v-if="currentIndex == label.labelId" :key="index">
                     <!-- <img class="category-main-img" :src="category.mainImgUrl" v-if="category.mainImgUrl"/> -->
-                    <div class="label-list" v-for="(products, index) in category.secondLevelCategoryVOS" :key="index">
-                      <p class="label-title">{{products.categoryName}}</p>
-                      <div class="product-item" v-for="(product, index) in products.thirdLevelCategoryVOS" :key="index" @click="selectProduct(product)">
-                        <img src="//s.weituibao.com/1583591077131/%E5%88%86%E7%B1%BB.png" class="product-img"/>
-                        <p v-text="product.categoryName" class="product-title"></p>
+                    <div class="label-list" v-for="(products, index) in label.secondLevelLabelVOS" :key="index">
+                      <p class="label-title">{{products.labelName}}</p>
+                      <div class="product-item" v-for="(product, index) in products.thirdLevelLabelVOS" :key="index" @click="selectProduct(product)">
+                        <img class="product-img"  v-if="product.labelIcon" :src="$filters.prefix(product.labelIcon)"/>
+                        <p v-text="product.labelName" class="product-title"></p>
                       </div>
                     </div>
                   </div>
@@ -206,11 +206,11 @@ export default {
           }
           .product-item {
             width: 33.3333%;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-align: center;
-            font-size: 15px;
+            font-size: 12px;
             .product-img {
-              .wh(30px, 30px);
+              .wh(48px, 48px);
             }
           }
         }

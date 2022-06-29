@@ -40,6 +40,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/label',
+      name: 'label',
+      component: () => import(/* webpackChunkName: "label" */ '@/views/Label.vue'),
+      meta: {
+        index: 1
+      }
+    },
+    {
       path: '/product-list',
       name: 'product-list',
       component: () => import(/* webpackChunkName: "product-list" */ '@/views/ProductList.vue'),

@@ -1,12 +1,3 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
 
 <template>
   <div class="cart-box">
@@ -15,21 +6,22 @@
       <van-checkbox-group @change="groupChange" v-model="result" ref="checkboxGroup">
         <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
           <div class="good-item">
-            <van-checkbox :name="item.cartItemId" />
-            <div class="good-img"><img :src="$filters.prefix(item.goodsCoverImg)" alt=""></div>
+            <van-checkbox :name="item.giftId" />
+<!--            <div class="good-img"><img :src="$filters.prefix(item.giftImg)" alt=""></div>-->
             <div class="good-desc">
               <div class="good-title">
-                <span>{{ item.goodsName }}</span>
-                <span>x{{ item.goodsCount }}</span>
+                <span>{{ item.giftName }}</span>
+                <span>x{{ item.count }}</span>
+                <span>{{ item.price }}</span>
               </div>
               <div class="good-btn">
-                <div class="price">¥{{ item.sellingPrice }}</div>
+                <div class="price">¥{{ item.price }}</div>
                 <van-stepper
                   integer
                   :min="1"
                   :max="5"
-                  :model-value="item.goodsCount"
-                  :name="item.cartItemId"
+                  :model-value="item.count"
+                  :name="item.giftId"
                   async-change
                   @change="onChange"
                 />
@@ -42,7 +34,7 @@
               icon="delete"
               type="danger"
               class="delete-button"
-              @click="deleteGood(item.cartItemId)"
+              @click="deleteGood(item.giftId)"
             />
           </template>
         </van-swipe-cell>
@@ -58,9 +50,9 @@
       <van-checkbox @click="allCheck" v-model:checked="checkAll">全选</van-checkbox>
     </van-submit-bar>
     <div class="empty" v-if="!list.length">
-      <img class="empty-cart" src="https://s.yezgea02.com/1604028375097/empty-car.png" alt="空购物车">
+      <img class="empty-cart" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBgV-oOzdXRyFhK29DLEp1tFExf5fqbQPtyA&usqp=CAU" alt="空购物车">
       <div class="title">购物车空空如也</div>
-      <van-button round color="#1baeae" type="primary" @click="goTo" block>前往选购</van-button>
+      <van-button round color=rgb(255,50,10) type="primary" @click="goTo" block>前往选购</van-button>
     </div>
     <nav-bar></nav-bar>
   </div>
@@ -99,15 +91,15 @@ export default {
       Toast.loading({ message: '加载中...', forbidClick: true });
       const { data } = await getCart({ pageNumber: 1 })
       state.list = data
-      state.result = data.map(item => item.cartItemId)
+      state.result = data.map(item => item.giftId)
       Toast.clear()
     }
 
     const total = computed(() => {
       let sum = 0
-      let _list = state.list.filter(item => state.result.includes(item.cartItemId))
+      let _list = state.list.filter(item => state.result.includes(item.giftId))
       _list.forEach(item => {
-        sum += item.goodsCount * item.sellingPrice
+        sum += item.count * item.price
       })
       return sum
     })
@@ -129,16 +121,16 @@ export default {
         Toast.fail('商品不得小于0')
         return
       }
-      if (state.list.filter(item => item.cartItemId == detail.name)[0].goodsCount == value) return
+      if (state.list.filter(item => item.giftId == detail.name)[0].count == value) return
       Toast.loading({ message: '修改中...', forbidClick: true });
       const params = {
-        cartItemId: detail.name,
-        goodsCount: value
+        giftName: detail.name,
+        count: value
       }
       await modifyCart(params)
       state.list.forEach(item => {
-        if (item.cartItemId == detail.name) {
-          item.goodsCount = value
+        if (item.giftName == detail.name) {
+          item.count = value
         }
       })
       Toast.clear();
@@ -150,7 +142,7 @@ export default {
         return
       }
       const params = JSON.stringify(state.result)
-      router.push({ path: '/create-order', query: { cartItemIds: params } })
+      router.push({ path: '/create-order', query: { cartItems: params } })
     }
 
     const deleteGood = async (id) => {
@@ -173,7 +165,7 @@ export default {
     
     const allCheck = () => {
       if (!state.checkAll) {
-        state.result = state.list.map(item => item.cartItemId)
+        state.result = state.list.map(item => item.giftId)
       } else {
         state.result = []
       }

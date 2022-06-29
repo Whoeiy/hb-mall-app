@@ -1,42 +1,35 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="product-detail">
     <s-header :name="'商品详情'"></s-header>
     <div class="detail-content">
       <div class="detail-swipe-wrap">
-        <van-swipe class="my-swipe" indicator-color="#1baeae">
-          <van-swipe-item v-for="(item, index) in detail.goodsCarouselList" :key="index">
-            <img :src="item" alt="">
-          </van-swipe-item>
-        </van-swipe>
+<!--        <van-swipe class="my-swipe" indicator-color=rgb(255,30,1)>-->
+<!--          <van-swipe-item v-for="(detail, index) in detail.imgUrl" :key="index">-->
+            <img class="product-img"  v-if="detail.imgUrl" :src="$filters.prefix(detail.imgUrl)"/>
+<!--          </van-swipe-item>-->
+<!--        </van-swipe>-->
       </div>
       <div class="product-info">
         <div class="product-title">
-          {{ detail.goodsName || '' }}
+          {{ detail.giftName || '' }}
         </div>
         <div class="product-desc">免邮费 顺丰快递</div>
         <div class="product-price">
-          <span>¥{{ detail.sellingPrice || '' }}</span>
-          <!-- <span>库存203</span> -->
+          <span>¥{{ detail.originalPrice || '' }}</span>
+          <span style="color:#FF6B01">会员¥{{ detail.vipPrice || '' }}</span>
+          <span>礼品库存{{ detail.stockNum || '' }}</span>
         </div>
       </div>
       <div class="product-intro">
-        <ul>
-          <li>概述</li>
-          <li>参数</li>
-          <li>安装服务</li>
-          <li>常见问题</li>
-        </ul>
-        <div class="product-content" v-html="detail.goodsDetailContent || ''"></div>
+<!--        <ul>-->
+<!--          <li>概述</li>-->
+<!--          <li>参数</li>-->
+<!--          <li>安装服务</li>-->
+<!--          <li>常见问题</li>-->
+<!--        </ul>-->
+        <div class="product-content" v-html="detail.giftIntro || ''"></div>
       </div>
     </div>
     <van-action-bar>
@@ -56,7 +49,7 @@ import { getDetail } from '@/service/good'
 import { addCart } from '@/service/cart'
 import sHeader from '@/components/SimpleHeader'
 import { Toast } from 'vant'
-import { prefix } from '@/common/js/utils'
+// import { prefix } from '@/common/js/utils'
 export default {
   setup() {
     const route = useRoute()
@@ -65,14 +58,14 @@ export default {
 
     const state = reactive({
       detail: {
-        goodsCarouselList: []
+        // goodsCarouselList: []
       }
     })
 
     onMounted(async () => {
       const { id } = route.params
       const { data } = await getDetail(id)
-      data.goodsCarouselList = data.goodsCarouselList.map(i => prefix(i))
+      // data.goodsCarouselList = data.goodsCarouselList.map(i => prefix(i))
       state.detail = data
       store.dispatch('updateCart')
     })
@@ -92,20 +85,20 @@ export default {
     }
 
     const handleAddCart = async () => {
-      const { resultCode } = await addCart({ goodsCount: 1, goodsId: state.detail.goodsId })
+      const { resultCode } = await addCart({ count: 1, giftId: state.detail.giftId, price: state.detail.originalPrice })
       if (resultCode == 200 ) Toast.success('添加成功')
       store.dispatch('updateCart')
     }
 
     const goToCart = async () => {
-      await addCart({ goodsCount: 1, goodsId: state.detail.goodsId })
+      await addCart({ count: 1, giftId: state.detail.giftId, price: state.detail.originalPrice })
       store.dispatch('updateCart')
       router.push({ path: '/cart' })
     }
 
     const count = computed(() => {
-      console.log(111, store.state.cartCount)
-      return store.state.cartCount
+      console.log(111, store.state.count)
+      return store.state.count
     })
 
     return {
@@ -154,6 +147,10 @@ export default {
             // height: 300px;
           }
         }
+      }
+      .product-img{
+        padding: 10px 10px;
+        width: 100%;
       }
       .product-info {
         padding: 0 10px;
@@ -208,10 +205,10 @@ export default {
       }
     }
     .van-action-bar-button--warning {
-      background: linear-gradient(to right,#6bd8d8, @primary)
+      background: linear-gradient(to right,@primary, #FF6B01)
     }
     .van-action-bar-button--danger {
-      background: linear-gradient(to right, #0dc3c3, #098888)
+      background: linear-gradient(to right, @primary, #FF6B01)
     }
   }
 </style>

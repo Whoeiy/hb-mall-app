@@ -3,7 +3,7 @@
 <template>
   <div>
     <header class="home-header wrap" :class="{'active' : headerScroll}">
-      <router-link tag="i" to="./category"><i class="nbicon nbmenu2"></i></router-link>
+      <router-link tag="i" to="./label"><i class="nbicon nbmenu2"></i></router-link>
       <div class="header-search">
         <span class="app-name">HeartBeat365</span>
         <i class="iconfont icon-search"></i>
@@ -18,7 +18,7 @@
     <swiper :list="swiperList"></swiper>
     <div class="label-list">
       <div v-for="item in labelList" v-bind:key="item.labelId" @click="tips">
-        <img :src="item.imgUrl">
+        <img  :src="item.imgUrl">
         <span>{{item.name}}</span>
       </div>
     </div>
@@ -145,7 +145,7 @@ export default {
     }
 
     const tips = () => {
-      Toast('敬请期待');
+      router.push({ path: `/label` })
     }
 
     return {
