@@ -5,11 +5,7 @@
     <s-header :name="'商品详情'"></s-header>
     <div class="detail-content">
       <div class="detail-swipe-wrap">
-<!--        <van-swipe class="my-swipe" indicator-color=rgb(255,30,1)>-->
-<!--          <van-swipe-item v-for="(detail, index) in detail.imgUrl" :key="index">-->
             <img class="product-img"  v-if="detail.imgUrl" :src="$filters.prefix(detail.imgUrl)"/>
-<!--          </van-swipe-item>-->
-<!--        </van-swipe>-->
       </div>
       <div class="product-info">
         <div class="product-title">

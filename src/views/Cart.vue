@@ -7,12 +7,12 @@
         <van-swipe-cell :right-width="50" v-for="(item, index) in list" :key="index">
           <div class="good-item">
             <van-checkbox :name="item.giftId" />
-<!--            <div class="good-img"><img :src="$filters.prefix(item.giftImg)" alt=""></div>-->
+            <div class="good-img"><img :src="$filters.prefix(item.giftImg)" alt=""></div>
             <div class="good-desc">
               <div class="good-title">
                 <span>{{ item.giftName }}</span>
                 <span>x{{ item.count }}</span>
-                <span>{{ item.price }}</span>
+<!--                <span>{{ item.price }}</span>-->
               </div>
               <div class="good-btn">
                 <div class="price">¥{{ item.price }}</div>
@@ -47,7 +47,7 @@
       button-text="结算"
       @submit="onSubmit"
     >
-      <van-checkbox @click="allCheck" v-model:checked="checkAll">全选</van-checkbox>
+      <van-checkbox @click="allCheck" v-model:checked="checkAll" >全选</van-checkbox>
     </van-submit-bar>
     <div class="empty" v-if="!list.length">
       <img class="empty-cart" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBgV-oOzdXRyFhK29DLEp1tFExf5fqbQPtyA&usqp=CAU" alt="空购物车">
@@ -90,8 +90,8 @@ export default {
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true });
       const { data } = await getCart({ pageNumber: 1 })
-      state.list = data
-      state.result = data.map(item => item.giftId)
+      state.list = data.cartItems
+      state.result = data.map(item => item.customerId)
       Toast.clear()
     }
 
@@ -121,7 +121,7 @@ export default {
         Toast.fail('商品不得小于0')
         return
       }
-      if (state.list.filter(item => item.giftId == detail.name)[0].count == value) return
+      if (state.list.filter(item => item.customerId == detail.name)[0].count == value) return
       Toast.loading({ message: '修改中...', forbidClick: true });
       const params = {
         giftName: detail.name,
