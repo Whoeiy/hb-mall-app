@@ -14,7 +14,7 @@
         <div class="product-desc">免邮费 顺丰快递</div>
         <div class="product-price">
           <span>¥{{ detail.originalPrice || '' }}</span>
-          <span style="color:#FF6B01">会员¥{{ detail.vipPrice || '' }}</span>
+<!--          <span style="color:#FF6B01">会员¥{{ detail.vipPrice || '' }}</span>-->
           <span>礼品库存{{ detail.stockNum || '' }}</span>
         </div>
       </div>

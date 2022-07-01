@@ -17,7 +17,7 @@
     <nav-bar />
     <swiper :list="swiperList"></swiper>
     <div class="label-list">
-      <div v-for="item in labelList" v-bind:key="item.labelId" @click="tips">
+      <div v-for="item in labelList" v-bind:key="item.labelId" @click="tips(item)">
         <img  :src="item.imgUrl">
         <span>{{item.name}}</span>
       </div>
@@ -93,6 +93,7 @@ export default {
       newGifts: [],
       recommends: [],
       labelList: [
+
         {
           name: '特殊节日',
           imgUrl: 'https://igpgift.com/image/cache/images/showcase/banner/4682_600x315.jpg',
@@ -120,6 +121,7 @@ export default {
         // 获取购物车数据.
         store.dispatch('updateCart')
       }
+
       Toast.loading({
         message: '加载中...',
         forbidClick: true
@@ -141,13 +143,35 @@ export default {
     })
 
     const goToDetail = (item) => {
-      router.push({ path: `/product/${item.giftId}` })
+          const token = getLocal('token')
+          if (token) {
+            state.isLogin = true
+      router.push({ path: `/product/${item.giftId}` })}
+          else{
+            router.push({path: `/Login`})
+          }
     }
 
-    const tips = () => {
-      router.push({ path: `/label` })
+    const tips = (item) => {
+      const token = getLocal('token')
+          if (token) {
+            state.isLogin = true
+      if (item.labelId == 8) {
+        router.push({path: `/Special`})
+      }
+     else if (item.labelId == 53) {
+        router.push({path: `/Send`})
+      }
+      else if (item.labelId == 20) {
+        router.push({path: `/Holiday`})
+      }
+      else if (item.labelId == 14){
+        router.push({path: `/Label`})
+      }}
+          else{
+            router.push({path: `/Login`})
+          }
     }
-
     return {
       ...toRefs(state),
       goToDetail,

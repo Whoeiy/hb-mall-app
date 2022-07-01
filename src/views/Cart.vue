@@ -22,6 +22,7 @@
                   :max="5"
                   :model-value="item.count"
                   :name="item.giftId"
+                  :price="item.price"
                   async-change
                   @change="onChange"
                 />
@@ -63,6 +64,7 @@ import { reactive, onMounted, computed, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { Toast } from 'vant'
+import { getLocal } from '@/common/js/utils'
 import navBar from '@/components/NavBar'
 import sHeader from '@/components/SimpleHeader'
 import { getCart, deleteCartItem, modifyCart } from '@/service/cart'
@@ -80,18 +82,25 @@ export default {
       list: [],
       all: false,
       result: [],
-      checkAll: true
+      checkAll: false,
+      isLogin: false
     })
 
     onMounted(() => {
-      init()
+      const token = getLocal('token')
+      if (token) {
+        state.isLogin = true
+      init()}
+      else{
+        router.push({path: `/Login`})
+      }
     })
 
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true });
       const { data } = await getCart()
       state.list = data.cartItems
-      state.result = data.map(item => item.customerId)
+      state.result = data.map(item => item.giftId)
       Toast.clear()
     }
 
@@ -112,7 +121,8 @@ export default {
       router.push({ path: '/home' })
     }
 
-    const onChange = async (value, detail) => {
+    const onChange = async (value, detail)=> {
+
       if (value > 5) {
         Toast.fail('超出单个商品的最大购买数量')
         return
@@ -121,16 +131,20 @@ export default {
         Toast.fail('商品不得小于0')
         return
       }
-      if (state.list.filter(item => item.customerId == detail.name)[0].count == value) return
+      if (state.list.filter(item => item.giftId == detail.name)[0].count == value )return
       Toast.loading({ message: '修改中...', forbidClick: true });
+
       const params = {
-        giftName: detail.name,
-        count: value
+        giftId: detail.name,
+        count: value,
+        price: state.list.price
+
       }
       await modifyCart(params)
       state.list.forEach(item => {
-        if (item.giftName == detail.name) {
+        if (item.giftId == detail.name) {
           item.count = value
+          item.price= state.list.price
         }
       })
       Toast.clear();

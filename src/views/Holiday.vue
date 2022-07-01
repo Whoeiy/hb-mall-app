@@ -54,7 +54,6 @@ import { useRouter } from 'vue-router'
 import navBar from '@/components/NavBar'
 import listScroll from '@/components/ListScroll'
 import { getLabels } from "@/service/good";
-import { getLocal } from '@/common/js/utils'
 import { Toast } from 'vant'
 export default {
   components: {
@@ -67,24 +66,17 @@ export default {
     const searchWrap = ref(null)
     const state = reactive({
       labelData: [],
-      currentIndex: 14,
-      isLogin: false, // 是否已登录
+      currentIndex: 20
     })
 
     onMounted(async () => {
-      const token = getLocal('token')
-      if (token) {
-        state.isLogin = true
       let $screenHeight = document.documentElement.clientHeight
       console.log('searchWrap.value', searchWrap.value)
       searchWrap.value.style.height = $screenHeight - 100 + 'px'
       Toast.loading('加载中...')
       const { data } = await getLabels()
       Toast.clear()
-      state.labelData = data}
-      else{
-        router.push({path: `/Login`})
-      }
+      state.labelData = data
     })
 
     const goHome = () => {

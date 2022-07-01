@@ -48,6 +48,30 @@ const router = createRouter({
       }
     },
     {
+      path: '/special',
+      name: 'special',
+      component: () => import(/* webpackChunkName: "label" */ '@/views/Special.vue'),
+      meta: {
+        index: 1
+      }
+    },
+    {
+      path: '/send',
+      name: 'send',
+      component: () => import(/* webpackChunkName: "label" */ '@/views/Send.vue'),
+      meta: {
+        index: 1
+      }
+    },
+    {
+      path: '/holiday',
+      name: 'holiday',
+      component: () => import(/* webpackChunkName: "label" */ '@/views/Holiday.vue'),
+      meta: {
+        index: 1
+      }
+    },
+    {
       path: '/product-list',
       name: 'product-list',
       component: () => import(/* webpackChunkName: "product-list" */ '@/views/ProductList.vue'),

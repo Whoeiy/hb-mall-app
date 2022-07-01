@@ -56,6 +56,7 @@ import navBar from '@/components/NavBar'
 import listScroll from '@/components/ListScroll'
 import { getCategory } from "@/service/good";
 import { Toast } from 'vant'
+import { getLocal } from '@/common/js/utils'
 export default {
  components: {
    navBar,
@@ -67,17 +68,24 @@ export default {
    const searchWrap = ref(null)
    const state = reactive({
      categoryData: [],
-     currentIndex: 15
+     currentIndex: 34,
+     isLogin: false
    })
 
    onMounted(async () => {
+     const token = getLocal('token')
+     if (token) {
+       state.isLogin = true
      let $screenHeight = document.documentElement.clientHeight
      console.log('searchWrap.value', searchWrap.value)
      searchWrap.value.style.height = $screenHeight - 100 + 'px'
      Toast.loading('加载中...')
      const { data } = await getCategory()
      Toast.clear()
-     state.categoryData = data
+     state.categoryData = data}
+     else{
+       router.push({path: `/Login`})
+     }
    })
 
    const goHome = () => {
