@@ -89,7 +89,7 @@ export default {
 
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true });
-      const { data } = await getCart({ pageNumber: 1 })
+      const { data } = await getCart()
       state.list = data.cartItems
       state.result = data.map(item => item.customerId)
       Toast.clear()

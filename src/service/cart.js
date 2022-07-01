@@ -9,8 +9,8 @@ export function modifyCart(params) {
   return axios.put('/mall/a/cart', params);
 }
 
-export function getCart(params) {
-  return axios.get('/mall/a/cart', { params });
+export function getCart() {
+  return axios.get('/mall/a/cart');
 }
 
 export function deleteCartItem(id) {
