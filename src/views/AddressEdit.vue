@@ -93,8 +93,8 @@ export default {
         })
         state.addressInfo = {
           id: addressDetail.addressId,
-          name: addressDetail.userName,
-          tel: addressDetail.userPhone,
+          name: addressDetail.customerName,
+          tel: addressDetail.customerPhone,
           province: addressDetail.provinceName,
           city: addressDetail.cityName,
           county: addressDetail.regionName,
@@ -107,8 +107,8 @@ export default {
 
     const onSave = async (content) => {
       const params = {
-        userName: content.name,
-        userPhone: content.tel,
+        customerName: content.name,
+        customerPhone: content.tel,
         provinceName: content.province,
         cityName: content.city,
         regionName: content.county,

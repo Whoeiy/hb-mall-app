@@ -59,8 +59,8 @@ export default {
       state.list = data.map(item => {
         return {
           id: item.addressId,
-          name: item.userName,
-          tel: item.userPhone,
+          name: item.customerName,
+          tel: item.customerPhone,
           address: `${item.provinceName} ${item.cityName} ${item.regionName} ${item.detailAddress}`,
           isDefault: !!item.defaultFlag
         }
