@@ -6,7 +6,7 @@ export function addCart(params) {
 }
 
 export function modifyCart(params) {
-  return axios.put('/mall/a/cart', params);
+  return axios.post('/mall/a/cart', params);
 }
 
 export function getCart() {
@@ -14,10 +14,9 @@ export function getCart() {
 }
 
 export function deleteCartItem(id) {
-  return axios.delete(`/mall/a/cart/${id}`);
+  return axios.delete(`/mall/a/cart?giftId=${id}`);
 }
 
 export function getByCartItemIds(params) {
   return axios.get('/shop-cart/settle', { params });
 }
-

@@ -14,30 +14,32 @@
                 <span>x{{ item.count }}</span>
 <!--                <span>{{ item.price }}</span>-->
               </div>
+
+
               <div class="good-btn">
                 <div class="price">¥{{ item.price }}</div>
                 <van-stepper
                   integer
-                  :min="1"
-                  :max="5"
+                  :min="0"
+                  :max="10"
                   :model-value="item.count"
+                  :v-model="item.count"
                   :name="item.giftId"
-                  :price="item.price"
-                  async-change
-                  @change="onChange"
+                  async-change:true
+                  @plus="onChange(item.count)"
+                  @minus="onMinus"
+                />
+                <van-button
+                    square
+                    icon="delete"
+                    type="danger"
+                    class="delete-button"
+                    @click="deleteGood(item.giftId)"
                 />
               </div>
             </div>
           </div>
-          <template #right>
-            <van-button
-              square
-              icon="delete"
-              type="danger"
-              class="delete-button"
-              @click="deleteGood(item.giftId)"
-            />
-          </template>
+
         </van-swipe-cell>
       </van-checkbox-group>
     </div>
@@ -121,30 +123,46 @@ export default {
       router.push({ path: '/home' })
     }
 
-    const onChange = async (value, detail)=> {
+    const onMinus= async (value, detail) => {
 
-      if (value > 5) {
-        Toast.fail('超出单个商品的最大购买数量')
-        return
-      }
-      if (value < 1) {
-        Toast.fail('商品不得小于0')
-        return
-      }
-      if (state.list.filter(item => item.giftId == detail.name)[0].count == value )return
+      if (state.list.filter(item => item.giftId == detail.name)[0].count  == value )return
       Toast.loading({ message: '修改中...', forbidClick: true });
 
-      const params = {
-        giftId: detail.name,
-        count: value,
-        price: state.list.price
+      await deleteCartItem(detail.name)
 
-      }
-      await modifyCart(params)
       state.list.forEach(item => {
         if (item.giftId == detail.name) {
           item.count = value
-          item.price= state.list.price
+          //  item.price= state.list.filter(item => item.giftId == detail.name)[0].price
+        }
+      })
+      Toast.clear();
+    }
+
+
+    const onChange = async (value, detail) => {
+
+      if (value > 10) {
+        Toast.fail('超出单个商品的最大购买数量')
+        return
+      }
+
+      if (state.list.filter(item => item.giftId == detail.name)[0].count +1 == value )return
+      Toast.loading({ message: '修改中...', forbidClick: true });
+      const params = {
+        giftId: detail.name,
+        count: value,
+        price: state.list.filter(item => item.giftId == detail.name)[0].price
+      }
+      // const { resultCode } = await modifyCart({ count: value, giftId: detail.name, price: state.list.filter(item => item.giftId == detail.name)[0].price })
+      // if (resultCode == 200 ) Toast.success('成功')
+      // store.dispatch('updateCart')
+     await modifyCart(params)
+
+      state.list.forEach(item => {
+        if (item.giftId == detail.name) {
+          item.count = value
+        //  item.price= state.list.filter(item => item.giftId == detail.name)[0].price
         }
       })
       Toast.clear();
@@ -196,7 +214,8 @@ export default {
       onSubmit,
       deleteGood,
       groupChange,
-      allCheck
+      allCheck,
+      onMinus
     }
   }
 }
@@ -258,8 +277,9 @@ export default {
         }
       }
       .delete-button {
-        width: 50px;
+        width: 25px;
         height: 100%;
+        ;
       }
     }
     .empty {
