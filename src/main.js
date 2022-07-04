@@ -5,7 +5,7 @@ import store from './store'
 import router from './router'
 import 'lib-flexible/flexible'
 import 'vant/lib/index.css'; // 全局引入样式
-import VueCookies from 'vue-cookies'
+// import VueCookies from 'vue-cookies'
 
 const app = createApp(App) // 创建实例
 
@@ -55,5 +55,5 @@ app.use(ActionBarButton)
 
 app.use(router)
 app.use(store)
-app.use(VueCookies)
+// app.use(VueCookies)
 app.mount('#app')
