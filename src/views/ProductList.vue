@@ -1,12 +1,4 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="product-list-wrap">
@@ -20,9 +12,17 @@
             class="search-title"
             v-model="keyword"/>
         </div>
-        <span class="search-btn" @click="getSearch">搜索</span>
+        <span class="search-btn" slot="append" @click="getSearch">搜索</span>
+        <p style="display: inline-block;">
+            <span v-for="(item, index) in searchHistoryList" :key="index" style="float:right; margin: 0 10px;">{{ item }}</span><!-- 右浮动实现从左往右删除数组 -->
+        </p>
+        <p>tip:获取并展示输入的词语,最多6个词语</p>
+
+      
+
+
       </header>
-      <van-tabs type="card" color="#1baeae" @click="changeTab" >
+      <van-tabs type="card" color="#FF6B01" @click="changeTab">
         <van-tab title="推荐" name=""></van-tab>
         <van-tab title="新品" name="new"></van-tab>
         <van-tab title="价格" name="price"></van-tab>
@@ -40,11 +40,11 @@
           <!-- <p v-for="item in list" :key="item">{{ item }}</p> -->
           <template v-if="productList.length">
             <div class="product-item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
-              <img :src="$filters.prefix(item.goodsCoverImg)" />
+              <img :src="$filters.prefix(item.imgUrl)" />
               <div class="product-info">
-                <p class="name">{{item.goodsName}}</p>
-                <p class="subtitle">{{item.goodsIntro}}</p>
-                <span class="price">￥ {{item.sellingPrice}}</span>
+                <p class="name">{{item.giftName}}</p>
+                <p class="subtitle">{{item.giftIntro}}</p>
+                <span class="price">￥ {{item.vipPrice}}</span>
               </div>
             </div>
           </template>
@@ -59,8 +59,39 @@
 import { reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { search } from '@/service/good'
+
 export default {
-  setup() {
+    data () {
+        return {
+            searchGoods: '',
+            searchHistoryList: []
+        }
+    },
+    created() {
+        this.getSearchHistory()
+    },
+    methods: {
+        searchHistory(searchGoods){
+            if (this.searchHistoryList.length > 5) {  // 最多搜索6个,超出则删除一个数组元素
+                this.searchHistoryList.splice(0,1) // 删除索引值为0的数组元素
+                this.searchHistoryList.push(searchGoods) // 添加到数组末尾
+                this.$cookies.set('searchHistoryList', this.searchHistoryList) // 写入cookies
+                // this.$cookies.remove('searchHistoryList') // 移除cookies
+            } else { // 不超出则直接添加
+                this.searchHistoryList.push(searchGoods)
+                this.$cookies.set('searchHistoryList', this.searchHistoryList)
+            }
+        },
+        getSearchHistory() {
+            var tempList = this.$cookies.get('searchHistoryList') // 读取cookies
+            if (tempList !== null) { // 判断cookies是否为空
+                this.searchHistoryList = tempList.split(',') // 将cookies存储的字符串截取成数组
+            }
+        }
+    },
+
+
+    setup() {
     const route = useRoute()
     const router = useRouter()
     const state = reactive({
@@ -102,12 +133,14 @@ export default {
     }
 
     const productDetail = (item) => {
-      router.push({ path: `/product/${item.goodsId}` })
+      router.push({ path: `/product/${item.giftId}` })
     }
 
     const getSearch = () => {
+      router.push({path:'http://101.133.131.175:8080/mall/a/es/importAll'})
+
       onRefresh()
-    }
+    
 
     const onLoad = () => {
       if (!state.refreshing && state.page < state.totalPage) {
@@ -144,6 +177,7 @@ export default {
       onRefresh
     }
   }
+}
 }
 </script>
 
