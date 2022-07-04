@@ -12,7 +12,7 @@
             class="search-title"
             v-model="keyword"/>
         </div>
-        <!-- <span class="search-btn" slot="append" @click="getSearch">搜索</span> -->
+         <!-- <span class="search-btn" slot="append" @click="getSearch">搜索</span> -->
         <p style="display: inline-block;">
             <span v-for="(item, index) in searchHistoryList" :key="index" style="float:right; margin: 0 10px;">{{ item }}</span><!-- 右浮动实现从左往右删除数组 -->
         </p>
@@ -83,10 +83,11 @@ export default {
             }
         },
         getSearchHistory() {
-            var tempList = this.$cookies.get('searchHistoryList') // 读取cookies
-            if (tempList !== null) { // 判断cookies是否为空
-                this.searchHistoryList = tempList.split(',') // 将cookies存储的字符串截取成数组
-            }
+          console.log(this.$cookies)
+          var tempList = this.$cookies.get('searchHistoryList') // 读取cookies
+          if (tempList !== null) { // 判断cookies是否为空
+              this.searchHistoryList = tempList.split(',') // 将cookies存储的字符串截取成数组
+          }
         }
     },
 
