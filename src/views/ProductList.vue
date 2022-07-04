@@ -12,7 +12,7 @@
             class="search-title"
             v-model="keyword"/>
         </div>
-        <span class="search-btn" slot="append" @click="getSearch">搜索</span>
+        <!-- <span class="search-btn" slot="append" @click="getSearch">搜索</span> -->
         <p style="display: inline-block;">
             <span v-for="(item, index) in searchHistoryList" :key="index" style="float:right; margin: 0 10px;">{{ item }}</span><!-- 右浮动实现从左往右删除数组 -->
         </p>
@@ -140,7 +140,7 @@ export default {
       router.push({path:'http://101.133.131.175:8080/mall/a/es/importAll'})
 
       onRefresh()
-    
+    }
 
     const onLoad = () => {
       if (!state.refreshing && state.page < state.totalPage) {
@@ -177,7 +177,6 @@ export default {
       onRefresh
     }
   }
-}
 }
 </script>
 
