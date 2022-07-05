@@ -32,7 +32,7 @@
            <p v-for="item in list" :key="item">{{ item }}</p>
           <template v-if="productList.length">
             <div class="product-item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
-              <img :src="$filters.prefix(item.imgUrl)" />
+              <img :src="item.imgUrl" />
               <div class="product-info">
                 <p class="name">{{item.giftName}}</p>
                 <p class="subtitle">{{item.giftIntro}}</p>
@@ -84,9 +84,10 @@ export default {
         state.loading = false;
         return
       }
-      const { data, data: { list } } = await search({ keyword: state.keyword})
+      // const { data, data: {list} } = await search({ keyword: state.keyword})
+      const { data } = await search({ keyword: state.keyword})
       
-      state.productList = state.productList.concat(list)
+      state.productList = state.productList.concat(data)
       state.totalPage = data.totalPage
       state.loading = false;
       if (state.page >= data.totalPage) state.finished = true

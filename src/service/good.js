@@ -13,6 +13,6 @@ export function getLabels() {
 }
 
 export function search(params) {
-  return axios.get('/mall/a/es/search', { params});
+  return axios.get('/mall/a/es/search', {params});
 }
 
