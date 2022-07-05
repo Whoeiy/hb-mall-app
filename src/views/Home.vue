@@ -7,7 +7,7 @@
       <div class="header-search">
         <span class="app-name">HeartBeat365</span>
         <i class="iconfont icon-search"></i>
-        <router-link tag="span" class="search-title" to="./product-list?from=home">搜索心仪礼品</router-link>
+        <router-link tag="span" class="search-title" to="./Search?from=home">搜索心仪礼品</router-link>
       </div>
       <router-link class="login" tag="span" to="./login" v-if="!isLogin">登录</router-link>
       <router-link class="login" tag="span" to="./user" v-else>

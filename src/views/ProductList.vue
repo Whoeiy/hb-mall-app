@@ -1,12 +1,4 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="product-list-wrap">
@@ -22,11 +14,11 @@
         </div>
         <span class="search-btn" @click="getSearch">搜索</span>
       </header>
-      <van-tabs type="card" color="#1baeae" @click="changeTab" >
-        <van-tab title="推荐" name=""></van-tab>
-        <van-tab title="新品" name="new"></van-tab>
-        <van-tab title="价格" name="price"></van-tab>
-      </van-tabs>
+<!--      <van-tabs type="card" color="#1baeae" @click="changeTab" >-->
+<!--        <van-tab title="推荐" name=""></van-tab>-->
+<!--        <van-tab title="新品" name="new"></van-tab>-->
+<!--        <van-tab title="价格" name="price"></van-tab>-->
+<!--      </van-tabs>-->
     </div>
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh" class="product-list-refresh">
@@ -37,14 +29,14 @@
           @load="onLoad"
           @offset="10"
         >
-          <!-- <p v-for="item in list" :key="item">{{ item }}</p> -->
+           <p v-for="item in list" :key="item">{{ item }}</p>
           <template v-if="productList.length">
             <div class="product-item" v-for="(item, index) in productList" :key="index" @click="productDetail(item)">
-              <img :src="$filters.prefix(item.goodsCoverImg)" />
+              <img :src="$filters.prefix(item.imgUrl)" />
               <div class="product-info">
-                <p class="name">{{item.goodsName}}</p>
-                <p class="subtitle">{{item.goodsIntro}}</p>
-                <span class="price">￥ {{item.sellingPrice}}</span>
+                <p class="name">{{item.giftName}}</p>
+                <p class="subtitle">{{item.giftIntro}}</p>
+                <span class="price">￥ {{item.originalPrice}}</span>
               </div>
             </div>
           </template>
@@ -60,6 +52,9 @@ import { reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { search } from '@/service/good'
 export default {
+  header: {
+    'Content-Type': 'text/html; charset=utf-8'
+  },
   setup() {
     const route = useRoute()
     const router = useRouter()
@@ -89,7 +84,7 @@ export default {
         state.loading = false;
         return
       }
-      const { data, data: { list } } = await search({ pageNumber: state.page, goodsCategoryId: categoryId, keyword: state.keyword, orderBy: state.orderBy })
+      const { data, data: { list } } = await search({ keyword: state.keyword})
       
       state.productList = state.productList.concat(list)
       state.totalPage = data.totalPage
@@ -102,7 +97,7 @@ export default {
     }
 
     const productDetail = (item) => {
-      router.push({ path: `/product/${item.goodsId}` })
+      router.push({ path: `/product/${item.giftId}` })
     }
 
     const getSearch = () => {
