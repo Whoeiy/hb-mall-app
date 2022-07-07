@@ -22,7 +22,7 @@ export function DeleteAddress(id) {
 }
 
 export function getDefaultAddress() {
-  return axios.get('/address/default');
+  return axios.get('/mall/a/address/default');
 }
 
 export function getAddressList() {

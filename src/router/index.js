@@ -159,6 +159,16 @@ const router = createRouter({
         index: 3
       }
     },
+    {
+      path:'/custom-add',
+      name:'custom-add',
+      component: () => import(/* webpackChunkName: "custom-add" */ '@/views/addGiftCustom.vue'),
+    },
+    {
+      path:'/private-custom-add',
+      name:'private-custom-add',
+      component: () => import(/* webpackChunkName: "custom-add" */ '@/views/privateCustom.vue'),
+    }
   ]
 })
 

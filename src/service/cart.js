@@ -18,5 +18,14 @@ export function deleteCartItem(id) {
 }
 
 export function getByCartItemIds(params) {
-  return axios.get('/shop-cart/settle', { params });
+  return axios.get('/mall/a/settle', { params });
 }
+
+export function getService(id) {
+  return axios.get(`/mall/a/${id}/service`);
+}
+
+export function updateService(params) {
+  return axios.put('/mall/a/settle',  params );
+}
+
