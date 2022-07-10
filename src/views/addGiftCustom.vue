@@ -96,16 +96,19 @@ export default {
       console.log("state.selectServiceId " + state.selectServiceId);
     };
 
-    const submit = () => {
+    const submit = async() => {
       //console.log("state.selectServiceId " + state.selectServiceId);
       //console.log(parseInt(serviceChosenType))
-      updateService({
+      await updateService({
         giftId: currentItemId,
         serviceChosenType: parseInt(serviceChosenType),
         normalServiceId: state.selectServiceId,
         serviceNote: message.value,
-      });
-      router.back();
+      })
+      setTimeout(() => {
+        router.back();
+      }, 200);
+      
     };
 
     return {

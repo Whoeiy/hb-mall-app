@@ -37,14 +37,19 @@
           </div>
           <div class="good-btn">
             <div class="price">¥{{ item.sellingPrice }}</div>
-            <div v-if="item.service != null && item.service.serviceChosenType == 2">
+            <div
+              v-if="item.service != null && item.service.serviceChosenType == 2"
+            >
               <span
                 >{{ item.service.normalServiceTypeName }}-{{
                   item.service.normalServiceName
                 }}</span
               >
             </div>
-            <button @click="showPopup(item.giftId)" class="custom-button">
+            <button
+              @click="showPopup(item.giftId, index)"
+              class="custom-button"
+            >
               定制礼物
             </button>
 
@@ -143,16 +148,19 @@ export default {
       serviceChosenType: "",
     });
     const show = ref(false);
-    const showPopup = (id) => {
+    const showPopup = (id, index) => {
       show.value = true;
       state.currentItemId = id;
+      let array = state.cartList.map((item) => item.service.serviceChosenType);
+      checked.value = array[index].toString();
+      //checked.value = state.cartList.map((item) => item.service.serviceChosenType).toString();
     };
     const checked = ref("1");
     const getSelect = () => {
       console.log(state.currentItemId);
       if (checked.value == 1) {
         state.serviceChosenType = checked.value;
-        console.log(state.serviceChosenType)
+        console.log(state.serviceChosenType);
         updateService({
           giftId: state.currentItemId,
           serviceChosenType: parseInt(checked.value),
@@ -193,7 +201,7 @@ export default {
           });
         }, 200);
       }
-      console.log(state.serviceChosenType)
+      console.log(state.serviceChosenType);
       checked.value = state.serviceChosenType.toString();
     };
 
@@ -202,7 +210,7 @@ export default {
     });
     onActivated(() => {
       init();
-      location.reload()
+      location.reload();
     });
 
     const init = async () => {
