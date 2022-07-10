@@ -10,7 +10,7 @@
 import axios from '../utils/axios'
 
 export function createOrder(params) {
-  return axios.post('/saveOrder', params);
+  return axios.post('mall/a/saveOrder', params);
 }
 
 export function getOrderList(params) {
@@ -30,7 +30,7 @@ export function confirmOrder(id) {
 }
 
 export function payOrder(params) {
-  return axios.get('/paySuccess', { params })
+  return axios.get('mall/a/payOrder',  {params})
 }
 
 

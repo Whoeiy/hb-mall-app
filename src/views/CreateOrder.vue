@@ -37,7 +37,7 @@
           </div>
           <div class="good-btn">
             <div class="price">¥{{ item.sellingPrice }}</div>
-            <div v-if="item.service.serviceChosenType == 2">
+            <div v-if="item.service != null && item.service.serviceChosenType == 2">
               <span
                 >{{ item.service.normalServiceTypeName }}-{{
                   item.service.normalServiceName
@@ -247,7 +247,7 @@ export default {
     const handleCreateOrder = async () => {
       const params = {
         addressId: state.address.addressId,
-        cartItemIds: state.cartList.map((item) => item.cartItemId),
+        giftIdList: state.cartList.map((item) => item.giftId).join(","),
       };
       const { data } = await createOrder(params);
       setLocal("cartItemIds", "");
@@ -260,7 +260,7 @@ export default {
     };
 
     const handlePayOrder = async (type) => {
-      await payOrder({ orderNo: state.orderNo, payType: type });
+      await payOrder({ orderNo: parseInt(state.orderNo), payType: type });
       Toast.success("支付成功");
       setTimeout(() => {
         router.push({ path: "/order" });
