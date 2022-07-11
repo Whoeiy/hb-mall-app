@@ -31,21 +31,9 @@
           <div class="good-title">
             <span>{{ item.giftName }}</span>
             <span>x{{ item.count }}</span>
-            <div v-if="item.service != null">
-              <span>{{ item.service.serviceChosenTypeName }}</span>
-            </div>
           </div>
           <div class="good-btn">
             <div class="price">¥{{ item.sellingPrice }}</div>
-            <div
-              v-if="item.service != null && item.service.serviceChosenType == 2"
-            >
-              <span
-                >{{ item.service.normalServiceTypeName }}-{{
-                  item.service.normalServiceName
-                }}</span
-              >
-            </div>
             <button
               @click="showPopup(item.giftId, index)"
               class="custom-button"
@@ -80,6 +68,20 @@
                 </van-radio-group>
               </div>
             </van-popup>
+          </div>
+          <div style="display: flex; flex-direction: row; padding-top:5px">
+            <div v-if="item.service != null" style="padding-right:80px">
+              <span>{{ item.service.serviceChosenTypeName }}</span>
+            </div>
+            <div
+              v-if="item.service != null && item.service.serviceChosenType == 2"
+            >
+              <span
+                >{{ item.service.normalServiceTypeName }}-{{
+                  item.service.normalServiceName
+                }}</span
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -382,6 +384,7 @@ export default {
         justify-content: space-between;
       }
       .good-btn {
+        padding-top:5px;
         display: flex;
         justify-content: space-between;
         .price {

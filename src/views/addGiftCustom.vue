@@ -2,22 +2,18 @@
   <div class="address-edit-box">
     <s-header :name="'普通定制服务'"></s-header>
     <div v-for="(item, index) in serviceList" :key="index">
-      <!-- <span>{{ item.serviceName }}</span> -->
       <van-divider>{{ item.serviceName }}</van-divider>
       <div
         v-for="(item, index) in serviceList[index].serviceItemVo"
         :key="index"
+        style="padding-left: 10px; display: flex; flex-direction: row; justify-content: center;"
       >
         <van-radio-group v-model="checked" @click="getSelect()">
           <van-radio :name="item.serviceId" checked-color="#ee0a24">{{
             item.serviceName
           }}</van-radio>
         </van-radio-group>
-        <img
-          :src="$filters.prefix(item.sampleImg)"
-          alt=""
-          style="width: 60%; padding-left: 80px"
-        />
+        <img :src="$filters.prefix(item.sampleImg)" alt="" style="width: 40%; padding-left:60px; padding-bottom: 40px" />
       </div>
     </div>
 
@@ -96,7 +92,7 @@ export default {
       console.log("state.selectServiceId " + state.selectServiceId);
     };
 
-    const submit = async() => {
+    const submit = async () => {
       //console.log("state.selectServiceId " + state.selectServiceId);
       //console.log(parseInt(serviceChosenType))
       await updateService({
@@ -104,11 +100,10 @@ export default {
         serviceChosenType: parseInt(serviceChosenType),
         normalServiceId: state.selectServiceId,
         serviceNote: message.value,
-      })
+      });
       setTimeout(() => {
         router.back();
       }, 200);
-      
     };
 
     return {
