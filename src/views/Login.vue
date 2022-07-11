@@ -55,7 +55,7 @@
         </van-field>
         <div style="margin: 16px">
           <div class="link-register" @click="toggle('register')">立即注册</div>
-          <van-button round block color="#1baeae" native-type="submit"
+          <van-button round block color="#ee1100" native-type="submit"
             >登录</van-button
           >
         </div>
@@ -130,7 +130,7 @@
         </van-field>
         <div style="margin: 16px">
           <div class="link-login" @click="toggle('login')">已有登录账号</div>
-          <van-button round block color="#1baeae" native-type="submit"
+          <van-button round block color="#ee1100" native-type="submit"
             >注册</van-button
           >
         </div>
@@ -230,7 +230,7 @@ export default {
     .link-register {
       font-size: 14px;
       margin-bottom: 20px;
-      color: #1989fa;
+      color: #FF3001;
       display: inline-block;
     }
   }
@@ -238,17 +238,17 @@ export default {
     .link-login {
       font-size: 14px;
       margin-bottom: 20px;
-      color: #1989fa;
+      color: #FF3001;
       display: inline-block;
     }
   }
   .verify-bar-area {
     margin-top: 24px;
     .verify-left-bar {
-      border-color: #1baeae;
+      border-color: #FF6B01;
     }
     .verify-move-block {
-      background-color: #1baeae;
+      background-color: #FF6B01;
       color: #fff;
     }
   }

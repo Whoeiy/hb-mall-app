@@ -15,20 +15,36 @@
 <!--                <span>{{ item.price }}</span>-->
               </div>
 
-
               <div class="good-btn">
                 <div class="price">¥{{ item.price }}</div>
                 <van-stepper
-                  integer
-                  :min="0"
-                  :max="10"
-                  :model-value="item.count"
-                  :v-model="item.count"
-                  :name="item.giftId"
-                  async-change:true
-                  @plus="onChange(item.count)"
-                  @minus="onMinus"
+                    integer
+                    :min="0"
+                    :max="10"
+                    :model-value="item.count"
+                    :name="item.giftId"
+                    async-change
+                    @change="onChange"
+                    @minus="onMinus(item.count)"
                 />
+<!--               <el-button style=" border: 2px solid #FF3001;width: 25px;text-align: center;heigh:25px;font-size: 20px" @click="onChange(index)">+</el-button>-->
+<!--                <el-button style="font-size: 20px;text-align: center;padding-top: 2px">{{ item.count }}</el-button>-->
+<!--                <el-button style=" border: 2px solid #FF3001;width: 25px;text-align: center;heigh:25px;font-size: 20px" @click="onChange(index)">-</el-button>-->
+<!--                <van-stepper-->
+<!--                  integer-->
+<!--                  :min="0"-->
+<!--                  :max="10"-->
+<!--                  :model-value="item.count"-->
+<!--                  :v-model="item.count"-->
+<!--                  :name="item.giftId"-->
+<!--                  async-change:true-->
+<!--                  @plus="onChange(item.count)"-->
+<!--                  @minus="onMinus"-->
+<!--                />-->
+                <div >
+
+                </div>
+
                 <van-button
                     square
                     icon="delete"
@@ -69,13 +85,15 @@ import { Toast } from 'vant'
 import { getLocal } from '@/common/js/utils'
 import navBar from '@/components/NavBar'
 import sHeader from '@/components/SimpleHeader'
-import { getCart, deleteCartItem, modifyCart } from '@/service/cart'
+import {getCart, deleteCartItem, modifyCart} from '@/service/cart'
 
 export default {
   components: {
     navBar,
     sHeader
   },
+
+
   setup() {
     const router = useRouter()
     const store = useStore()
@@ -139,34 +157,32 @@ export default {
       Toast.clear();
     }
 
-
     const onChange = async (value, detail) => {
-
       if (value > 10) {
         Toast.fail('超出单个商品的最大购买数量')
         return
       }
-
-      if (state.list.filter(item => item.giftId == detail.name)[0].count +1 == value )return
+      if (value < 1) {
+        Toast.fail('商品不得小于0')
+        return
+      }
+      if (state.list.filter(item => item.giftId == detail.name)[0].count == value) return
       Toast.loading({ message: '修改中...', forbidClick: true });
       const params = {
         giftId: detail.name,
         count: value,
-        price: state.list.filter(item => item.giftId == detail.name)[0].price
-      }
-      // const { resultCode } = await modifyCart({ count: value, giftId: detail.name, price: state.list.filter(item => item.giftId == detail.name)[0].price })
-      // if (resultCode == 200 ) Toast.success('成功')
-      // store.dispatch('updateCart')
-     await modifyCart(params)
+        price: state.list.price
 
+      }
+      await modifyCart(params)
       state.list.forEach(item => {
         if (item.giftId == detail.name) {
           item.count = value
-        //  item.price= state.list.filter(item => item.giftId == detail.name)[0].price
         }
       })
       Toast.clear();
     }
+
 
     const onSubmit = async () => {
       if (state.result.length == 0) {
@@ -215,7 +231,8 @@ export default {
       deleteGood,
       groupChange,
       allCheck,
-      onMinus
+      onMinus,
+
     }
   }
 }
