@@ -14,15 +14,15 @@ export function createOrder(params) {
 }
 
 export function getOrderList(params) {
-  return axios.get('/order', { params });
+  return axios.get('mall/a/order/list', { params });
 }
 
 export function getOrderDetail(id) {
-  return axios.get(`/order/${id}`);
+  return axios.get(`mall/a/order/${id}`);
 }
 
 export function cancelOrder(id) {
-  return axios.put(`/order/${id}/cancel`);
+  return axios.put(`mall/a/order/${id}/cancel`);
 }
 
 export function confirmOrder(id) {
