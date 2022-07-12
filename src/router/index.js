@@ -152,6 +152,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/coupon',
+      name: 'coupon',
+      component: () => import(/* webpackChunkName: "address" */ '@/views/Coupon.vue'),
+      meta: {
+        index: 2
+      }
+    },
+    {
       path: '/address-edit',
       name: 'address-edit',
       component: () => import(/* webpackChunkName: "address-edit" */ '@/views/AddressEdit.vue'),
