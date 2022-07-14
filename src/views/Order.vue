@@ -38,7 +38,7 @@
             @click="goTo(item.orderNo)"
           >
             <div class="order-item-header">
-              <span>订单时间：{{ item.createTime }}</span>
+              <span>订单时间：{{ formatDate(item.createTime) }}</span>
               <span>{{ item.orderStatusName }}</span>
             </div>
             <van-card
@@ -85,7 +85,11 @@ export default {
       const {
         data,
         data: { list },
-      } = await getOrderList({ pageNum: state.page, pageSize: state.pageSize, orderStatus: state.status });
+      } = await getOrderList({
+        pageNum: state.page,
+        pageSize: state.pageSize,
+        orderStatus: state.status,
+      });
       state.list = state.list.concat(list);
       state.totalPage = data.totalPage;
       state.loading = false;
@@ -126,6 +130,21 @@ export default {
       state.page = 1;
       onLoad();
     };
+    const formatDate = (value) => {
+      let date = new Date(value);
+      let y = date.getFullYear();
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? "0" + MM : MM;
+      let d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      let h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      let m = date.getMinutes();
+      m = m < 10 ? "0" + m : m;
+      let s = date.getSeconds();
+      s = s < 10 ? "0" + s : s;
+      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
+    };
 
     return {
       ...toRefs(state),
@@ -134,6 +153,7 @@ export default {
       goBack,
       onLoad,
       onRefresh,
+      formatDate
     };
   },
 };

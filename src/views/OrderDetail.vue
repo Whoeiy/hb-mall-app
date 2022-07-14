@@ -25,7 +25,7 @@
         <span>{{ formatDate(detail.createTime) }} </span>
       </div>
       <van-button
-        v-if="detail.orderStatus == 3"
+        v-if="detail.orderStatus == 4"
         style="margin-bottom: 10px"
         color="#1baeae"
         block
@@ -41,7 +41,7 @@
         >去支付</van-button
       >
       <van-button
-        v-if="!(detail.orderStatus < 0 || detail.orderStatus == 4)"
+        v-if="detail.orderStatus == 0"
         block
         @click="handleCancelOrder(detail.orderNo)"
         >取消订单</van-button
@@ -102,7 +102,7 @@
 </template>
 
 <script>
-import { reactive, toRefs, onMounted } from "vue";
+import { reactive, toRefs, onMounted, onActivated } from "vue";
 import sHeader from "@/components/SimpleHeader";
 import {
   getOrderDetail,
@@ -127,6 +127,10 @@ export default {
     onMounted(() => {
       init();
     });
+    onActivated(() => {
+      init();
+      location.reload();
+    });
 
     const init = async () => {
       Toast.loading({
@@ -145,7 +149,7 @@ export default {
       })
         .then(() => {
           cancelOrder(id).then((res) => {
-            if (res.resultCode == 200) {
+            if (res.code == 200) {
               Toast("删除成功");
               init();
             }
@@ -162,7 +166,7 @@ export default {
       })
         .then(() => {
           confirmOrder(id).then((res) => {
-            if (res.resultCode == 200) {
+            if (res.code == 200) {
               Toast("确认成功");
               init();
             }

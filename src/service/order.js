@@ -26,7 +26,7 @@ export function cancelOrder(id) {
 }
 
 export function confirmOrder(id) {
-  return axios.put(`/order/${id}/finish`)
+  return axios.put(`mall/a/order/${id}/finish`)
 }
 
 export function payOrder(params) {
