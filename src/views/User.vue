@@ -61,7 +61,7 @@ export default {
     const router = useRouter()
     const state = reactive({
       user: {
-        
+
       },
       loading: true,
       islogin: false
@@ -131,8 +131,8 @@ export default {
       width: 94%;
       margin: 10px;
       height: 115px;
-      background: linear-gradient(90deg, @primary, #bd2b26);
-      box-shadow: 0 2px 5px #bd2b26;
+      background: linear-gradient(90deg, @primary, #dd521b);
+      box-shadow: 0 2px 5px #dd521b;
       border-radius: 6px;
       .info {
         position: relative;

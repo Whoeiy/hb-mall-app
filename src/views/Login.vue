@@ -1,12 +1,4 @@
-<!--
- * 严肃声明：
- * 开源版本请务必保留此注释头信息，若删除我方将保留所有法律责任追究！
- * 本系统已申请软件著作权，受国家版权局知识产权以及国家计算机软件著作权保护！
- * 可正常分享和学习源码，不得用于违法犯罪活动，违者必究！
- * Copyright (c) 2020 陈尼克 all rights reserved.
- * 版权所有，侵权必究！
- *
--->
+
 
 <template>
   <div class="login">
@@ -55,7 +47,7 @@
         </van-field>
         <div style="margin: 16px">
           <div class="link-register" @click="toggle('register')">立即注册</div>
-          <van-button round block color="#ee1100" native-type="submit"
+          <van-button round block color="#1baeae" native-type="submit"
             >登录</van-button
           >
         </div>
@@ -130,7 +122,7 @@
         </van-field>
         <div style="margin: 16px">
           <div class="link-login" @click="toggle('login')">已有登录账号</div>
-          <van-button round block color="#ee1100" native-type="submit"
+          <van-button round block color="#1baeae" native-type="submit"
             >注册</van-button
           >
         </div>
@@ -230,7 +222,7 @@ export default {
     .link-register {
       font-size: 14px;
       margin-bottom: 20px;
-      color: #FF3001;
+      color: #1989fa;
       display: inline-block;
     }
   }
@@ -238,17 +230,17 @@ export default {
     .link-login {
       font-size: 14px;
       margin-bottom: 20px;
-      color: #FF3001;
+      color: #1989fa;
       display: inline-block;
     }
   }
   .verify-bar-area {
     margin-top: 24px;
     .verify-left-bar {
-      border-color: #FF6B01;
+      border-color: #1baeae;
     }
     .verify-move-block {
-      background-color: #FF6B01;
+      background-color: #1baeae;
       color: #fff;
     }
   }

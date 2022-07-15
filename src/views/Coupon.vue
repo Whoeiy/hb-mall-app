@@ -8,18 +8,29 @@
         v-model="chosenAddressId"
         :list="list"
         default-tag-text="默认"
+        
+      />
+
+      <!--
         @add="onAdd"
         @edit="onEdit"
         @select="select"
-      />
-      <van-address-list
+      -->
+      
+        <van-address-list
         v-else
         v-model="chosenAddressId"
         :list="list"
         default-tag-text="默认"
+        
+      />
+
+      <!--
         @add="onAdd"
         @edit="onEdit"
-      />
+        
+      -->
+      
     </div>
   </div>
 </template>
@@ -27,7 +38,8 @@
 <script>
 import { reactive, toRefs, onMounted } from 'vue'
 import sHeader from '@/components/SimpleHeader'
-import { getAddressList } from '@/service/address'
+//import { getAddressList } from '@/service/address'
+import { getCoupon } from '@/service/user'
 import { useRoute, useRouter } from 'vue-router'
 export default {
   components: {
@@ -43,28 +55,28 @@ export default {
     })
 
     onMounted(async () => {
-      const { data } = await getAddressList()
+      const { data } = await getCoupon()
       if (!data) {
         state.list = []
         return
       }
-      state.list = data.map(item => {
+      state.list = data.map(data => {
         return {
-          id: item.addressId,
-          name: item.customerName,
-          tel: item.customerPhone,
-          address: `${item.provinceName} ${item.cityName} ${item.regionName} ${item.detailAddress}`,
-          isDefault: !!item.defaultFlag
+          id: data.couponId,
+          name: data.couponName,
+          tel: data.couponTypeName,
+          address: `开始时间：${data.startTime} 结束时间：${data.endTime} 添加时间：${data.addTime} `,//${item.detailAddress}
+          //isDefault: !!item.defaultFlag
         }
       })
     })
 
     const onAdd = () => {
-      router.push({ path: '/address-edit', query: { type: 'add', from: state.from }})
+      router.push({ path: '/coupon-edit', query: { type: 'add', from: state.from }})
     }
 
     const onEdit = (item) => {
-      router.push({ path: 'address-edit', query: { type: 'edit', addressId: item.id, from: state.from }})
+      router.push({ path: 'coupon-edit', query: { type: 'edit', addressId: item.id, from: state.from }})
     }
 
     const select = (item) => {
@@ -86,11 +98,13 @@ export default {
   .address-box {
     .van-radio__icon {
       display: none;
+
     }
     .address-item {
       .van-button {
-        background: @primary;
-        border-color: @primary;
+        background:rgb(255, 255, 255);
+        border-color:rgb(255, 255, 255);
+        text-decoration-color: rgb(255, 255, 255);
       }
     }
   }
