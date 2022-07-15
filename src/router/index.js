@@ -96,6 +96,22 @@ const router = createRouter({
       }
     },
     {
+      path: '/forum',
+      name: 'forum',
+      component: () => import(/* webpackChunkName: "forum" */ '@/views/Forum.vue'),
+      meta: {
+        index: 2
+      }
+    },
+    {
+      path: '/activity',
+      name: 'activity',
+      component: () => import(/* webpackChunkName: "activity" */ '@/views/Activity.vue'),
+      meta: {
+        index: 3
+      }
+    },
+    {
       path: '/cart',
       name: 'cart',
       component: () => import(/* webpackChunkName: "cart" */ '@/views/Cart.vue'),

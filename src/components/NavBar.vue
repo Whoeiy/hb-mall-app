@@ -14,6 +14,10 @@
         <van-icon  name="shopping-cart-o" :badge="!count ? '' : count" />
         <span>购物车</span>
       </router-link>
+      <router-link  class="nav-list-item" to="forum">
+        <img src="../assets/activity.jpg" class="nav-icon1">
+        <span>活动</span>
+      </router-link>
       <router-link  class="nav-list-item" to="user">
         <i class="nbicon nblvsefenkaicankaoxianban-"></i>
         <span>我的</span>
@@ -40,7 +44,7 @@ export default {
     onMounted(() => {
       const token = getLocal('token')
       const path = route.path
-      if (token && !['/home', '/category'].includes(path)) {
+      if (token && !['/home', '/category','/forum'].includes(path)) {
         if (token) {
         state.isLogin = true
         store.dispatch('updateCart')}
@@ -87,6 +91,14 @@ export default {
           &.router-link-active {
             color: @primary;
           }
+          .nav-icon1{
+            width:21px;
+            display: flex;
+            flex: 1;
+            flex-direction: column;
+            padding-left: 29px;
+
+          }
           i {
             text-align: center;
             font-size: 22px;
@@ -101,4 +113,6 @@ export default {
         }
       }
     }
+
 </style>
+padding: 5px;

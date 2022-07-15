@@ -1,54 +1,38 @@
+
 <template>
-  <div class="order-box">
-    <s-header :name="'我的订单'" :back="'/user'"></s-header>
-    <van-tabs
-      @click="onChangeTab"
-      :color="'#1baeae'"
-      :title-active-color="'#1baeae'"
-      class="order-tab"
-      v-model="status"
-    >
-      <van-tab title="全部" name=""></van-tab>
-      <van-tab title="待支付" name="0"></van-tab>
-      <van-tab title="待定制" name="1"></van-tab>
-      <van-tab title="定制中" name="2"></van-tab>
-      <van-tab title="待发货" name="3"></van-tab>
-      <van-tab title="已发货" name="4"></van-tab>
-      <van-tab title="交易完成" name="5"></van-tab>
-      <van-tab title="已关闭" name="6"></van-tab>
-      <van-tab title="已取消" name="7"></van-tab>
-    </van-tabs>
+  <div class="cart-box">
+    <s-header :name="'活动中心'" :noback="faulse"></s-header>
     <div class="content">
       <van-pull-refresh
-        v-model="refreshing"
-        @refresh="onRefresh"
-        class="order-list-refresh"
+          v-model="refreshing"
+          @refresh="onRefresh"
+          class="order-list-refresh"
       >
         <van-list
-          v-model:loading="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
-          @offset="10"
+            v-model:loading="loading"
+            :finished="finished"
+            @load="onLoad"
+            @offset="0"
         >
           <div
-            v-for="(item, index) in list"
-            :key="index"
-            class="order-item-box"
-            @click="goTo(item.orderNo)"
+              v-for="(item, index) in list"
+              :key="index"
+              class="order-item-box"
+              @click="goTo(item.activityId)"
           >
+            <img :src="$filters.prefix(item.posterUrl)" alt="活动海报" style="width:100%;border-radius:10px; margin: 0 auto">
             <div class="order-item-header">
-              <span>订单时间：{{ formatDate(item.createTime) }}</span>
-              <span>{{ item.orderStatusName }}</span>
+<!--              <span>{{ item.activityName }}</span>-->
+              <span style="font-size:12px">{{ item.activityDetail }}</span>
+
             </div>
+
             <van-card
-              v-for="one in item.orderItemList"
-              :key="one.orderItemId"
-              :num="one.giftCount"
-              :price="one.sellingPrice"
-              :desc="one.service.serviceChosenTypeName"
-              :title="one.giftName"
-              :thumb="$filters.prefix(one.giftImg)"
+                v-for="one in item.list"
+                :key="one.activityId"
+
+                :title="one.activityName"
+                :thumb="$filters.prefix(one.posterUrl)"
             />
           </div>
         </van-list>
@@ -60,11 +44,11 @@
 <script>
 import { reactive, toRefs } from "vue";
 import sHeader from "@/components/SimpleHeader";
-import { getOrderList } from "@/service/order";
+import { getForum } from "@/service/activity";
 import { useRouter } from "vue-router";
 
 export default {
-  name: "Order",
+  name: "Forum",
   components: {
     sHeader,
   },
@@ -85,11 +69,7 @@ export default {
       const {
         data,
         data: { list },
-      } = await getOrderList({
-        pageNum: state.page,
-        pageSize: state.pageSize,
-        orderStatus: state.status,
-      });
+      } = await getForum({ pageNum: state.page, pageSize: state.pageSize });
       state.list = state.list.concat(list);
       state.totalPage = data.totalPage;
       state.loading = false;
@@ -103,7 +83,7 @@ export default {
     };
 
     const goTo = (id) => {
-      router.push({ path: "/order-detail", query: { id } });
+      router.push({ path: "/activity", query: { id } });
     };
 
     const goBack = () => {
@@ -130,21 +110,6 @@ export default {
       state.page = 1;
       onLoad();
     };
-    const formatDate = (value) => {
-      let date = new Date(value);
-      let y = date.getFullYear();
-      let MM = date.getMonth() + 1;
-      MM = MM < 10 ? "0" + MM : MM;
-      let d = date.getDate();
-      d = d < 10 ? "0" + d : d;
-      let h = date.getHours();
-      h = h < 10 ? "0" + h : h;
-      let m = date.getMinutes();
-      m = m < 10 ? "0" + m : m;
-      let s = date.getSeconds();
-      s = s < 10 ? "0" + s : s;
-      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
-    };
 
     return {
       ...toRefs(state),
@@ -153,16 +118,15 @@ export default {
       goBack,
       onLoad,
       onRefresh,
-      formatDate
     };
   },
 };
 </script>
 
-<style lang="less" scoped>
-@import "../common/style/mixin";
-.order-box {
-  .order-header {
+<style lang="less">
+@import '../common/style/mixin';
+.cart-box {
+  .cart-header {
     position: fixed;
     top: 0;
     left: 0;
@@ -172,28 +136,17 @@ export default {
     line-height: 44px;
     padding: 0 10px;
     .boxSizing();
-    color: #252525;
     background: #fff;
-    border-bottom: 1px solid #dcdcdc;
-    .order-name {
+
+    .cart-name {
       font-size: 14px;
     }
-  }
-  .order-tab {
-    position: fixed;
-    left: 0;
-    z-index: 1000;
-    width: 100%;
-    border-bottom: 1px solid #e9e9e9;
-  }
-  .skeleton {
-    margin-top: 60px;
   }
   .content {
     height: calc(~"(100vh - 70px)");
     overflow: hidden;
     overflow-y: scroll;
-    margin-top: 34px;
+    margin-top: 0px;
   }
   .order-list-refresh {
     .van-card__content {
@@ -202,7 +155,7 @@ export default {
       justify-content: center;
     }
     .van-pull-refresh__head {
-      background: #f9f9f9;
+
     }
     .order-item-box {
       margin: 20px 10px;
@@ -211,10 +164,12 @@ export default {
         padding: 10px 20px 0 20px;
         display: flex;
         justify-content: space-between;
+
       }
       .van-card {
         background-color: #fff;
         margin-top: 0;
+
       }
     }
   }
