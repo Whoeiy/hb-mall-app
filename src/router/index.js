@@ -200,6 +200,14 @@ const router = createRouter({
       }
     },
     {
+      path: '/coupon-edit',
+      name: 'coupon-edit',
+      component: () => import(/* webpackChunkName: "coupon-edit" */ '@/views/CouponEdit.vue'),
+      meta: {
+        index: 3
+      }
+    },
+    {
       path:'/custom-add',
       name:'custom-add',
       component: () => import(/* webpackChunkName: "custom-add" */ '@/views/addGiftCustom.vue'),

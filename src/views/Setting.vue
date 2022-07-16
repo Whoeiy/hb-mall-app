@@ -7,8 +7,8 @@
       <van-field v-model="introduceSign" label="邮箱" />
       <van-field v-model="password" type='password' label="修改密码" />
     </div>
-    <van-button round class="save-btn" color="#1baeae" type="primary" @click="save" block>保存</van-button>
-    <van-button round class="save-btn" color="#1baeae" type="primary" @click="handleLogout" block>退出登录</van-button>
+    <van-button round class="save-btn" color="#bd2b26" type="primary" @click="save" block>保存</van-button>
+    <van-button round class="save-btn" color="#bd2b26" type="primary" @click="handleLogout" block>退出登录</van-button>
   </div>
 </template>
 

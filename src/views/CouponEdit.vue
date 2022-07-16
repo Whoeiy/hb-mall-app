@@ -8,9 +8,7 @@
         v-model="chosenAddressId"
         :list="list"
         default-tag-text="默认"
-        @add="onAdd"
-        @edit="onEdit"
-        @select="select"
+        
       />
       <van-address-list
         v-else
