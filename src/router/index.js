@@ -112,6 +112,22 @@ const router = createRouter({
       }
     },
     {
+      path: '/post',
+      name: 'post',
+      component: () => import(/* webpackChunkName: "post" */ '@/views/Post.vue'),
+      meta: {
+        index: 3
+      }
+    },
+    {
+      path: '/postdetail',
+      name: 'postdetail',
+      component: () => import(/* webpackChunkName: "postdetail" */ '@/views/PostDetail.vue'),
+      meta: {
+        index: 3
+      }
+    },
+    {
       path: '/cart',
       name: 'cart',
       component: () => import(/* webpackChunkName: "cart" */ '@/views/Cart.vue'),
