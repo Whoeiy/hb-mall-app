@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { ActionBar, ActionBarIcon, ActionBarButton, Divider, Popup, Overlay, Loading, Dialog, ContactCard, Form, AddressEdit, AddressList, Field, CellGroup, Cell, SwipeCell, Icon, Stepper, Card, Checkbox, CheckboxGroup, Button, Swipe, SwipeItem, PullRefresh, List, Tab, Tabs, SubmitBar, Toast, Skeleton, RadioGroup, Radio } from 'vant'
+import { ActionBar, ActionBarIcon, ActionBarButton, CouponList, Divider, Popup, Overlay, Loading, Dialog, ContactCard, Form, AddressEdit, AddressList, Field, CellGroup, Cell, SwipeCell, Icon, Stepper, Card, Checkbox, CheckboxGroup, Button, Swipe, SwipeItem, PullRefresh, List, Tab, Tabs, SubmitBar, Toast, Skeleton, RadioGroup, Radio } from 'vant'
 import App from './App.vue'
 import store from './store'
 import router from './router'
@@ -37,6 +37,7 @@ app.use(ActionBarButton)
   .use(Field)
   .use(CellGroup)
   .use(Cell)
+  .use(CouponList)
   .use(SwipeCell)
   .use(Icon)
   .use(Stepper)
