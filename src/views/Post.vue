@@ -3,7 +3,7 @@
     <s-header :name="'发布帖子'" :noback="faulse"></s-header>
 
     <div>
-      <van-form @submit="onSubmit" :model="ruleForm" :rules="rules" ref="formRef">
+      <van-form   @submit="onSubmit"  v-model="post">
         <van-field
             v-model="title"
             name="title"
@@ -14,37 +14,60 @@
         <van-field
             style="height: 200px;margin-bottom: 0px"
             v-model="postContent"
+
             name="postContent"
             label="内容"
             placeholder="帖子的内容"
             :rules="[{ required: true, message: '请填写帖子的主要内容' }]"
         />
-        <van-uploader
-            :after-read="afterRead"
-            v-model="fileList"
-            multiple
-            :max-count="1"
-            :max-size="1080 * 2400"
-            @oversize="onOversize"
-        >
 
-<!--          <van-uploader-->
 
-<!--              :action="uploadImgServer"-->
-<!--              accept="jpg,jpeg,png"-->
-<!--              :headers="{-->
-<!--            token: token-->
-<!--          }"-->
-<!--              :show-file-list="false"-->
-<!--              :before-upload="handleBeforeUpload"-->
-<!--              :on-success="handleUrlSuccess"-->
-<!--          >-->
-            <van-button style="width: 100%; height: 400px">点击此处上传帖子的主图</van-button>
-          </van-uploader>
+        <van-uploader :after-read="uploadImg"> <div style="width:300px; height: 400px;" @click="uploadImg">
+          <span style="font-weight: bold;font-size: 100px;">+</span>
+          <p style="font-weight: bold;font-size: 20px">添加活动相关图片</p>
+        </div></van-uploader>
+
+
+
+        <!--        <div class="input-up">-->
+        <!--          <input-->
+
+        <!--              type="file"-->
+
+        <!--              accept="image/*"-->
+        <!--              style="display:none;height: 200px"-->
+        <!--              @change="changeImg()"-->
+        <!--              name="upload_file"-->
+        <!--              ref="input"-->
+        <!--          />-->
+        <!--          <div class="uploads" v-if="otherimg!=''" @click="upload">-->
+        <!--            <img  v-if="otherimg"-->
+        <!--                  :src="otherimg"  alt  style="width:300px; height: 400px"/>-->
+        <!--          </div>-->
+        <!--          <div class="upload" v-else @click="upload">-->
+        <!--            <span style="font-weight: bold;font-size: 100px">+</span>-->
+        <!--            <p style="font-weight: bold;font-size: 20px">添加活动相关图片</p>-->
+        <!--          </div>-->
+        <!--        </div>-->
+
+        <!--        <van-uploader-->
+        <!--            :after-read="afterRead"-->
+        <!--            v-model="fileList"-->
+        <!--            multiple-->
+        <!--            :max-count="1"-->
+        <!--            :max-size="1080 * 2400"-->
+        <!--            @oversize="onOversize"-->
+        <!--        >-->
+
+        <!--            <van-button style="width: 100%; height: 400px">点击此处上传帖子的主图</van-button>-->
+        <!--          </van-uploader>-->
+
+
+
 
       </van-form>
       <van-button round block color="#ee1110" native-type="submit" style=" width:94%;position:fixed; bottom:10px;margin: 10px 10px 10px 10px;"
-     onclick="onsubmit()"
+                  @click="onSubmit"
       >发布</van-button
       >
     </div>
@@ -54,65 +77,49 @@
 
 </template>
 <script>
+
 import sHeader from "@/components/SimpleHeader";
-import {reactive, toRefs,ref,} from "vue";
+import {onMounted, reactive, ref, toRefs,} from "vue";
 import {Toast} from "vant";
 import { Post} from "@/service/activity";
-
+import {useRoute } from "vue-router";
+import{uploadImgServer} from "@/service/activity";
+import axios from '../utils/axios'
 
 export default {
   name: "Post",
   components: {
     sHeader,
   },
-  methods:{
-    //文件图片上传
-    afterRead(fileObj) {
-      // 上传状态
-      this.fileLoading = true;
-      fileObj.status = "uploading";
-      // 状态提示
-      fileObj.message = "上传中...";
-      // 声明form表单数据
-      const formData = new FormData();
-      // 添加文件信息
-      formData.append("file", fileObj.file);
-      // 上传接口调用
-      this.$api.Up_files(formData).then((res) => {
-        // 存储返回数据
-        console.log(res);
-        this.turn.up_files.push(res.id);
-        fileObj.status = "done";
-        this.fileLoading = false;
-        console.log(this.turn.up_files);
-      }).catch((e) => {
-        console.log(e, 11);
-      });
-    },
 
-  },
-  setup(){
-    const formRef = ref(null)
+  setup() {
+
+    const route = useRoute();
+    const title = ref("");
+    const postContent = ref("");
     const state = reactive({
-
-        imgUrl: "",
-        postContent: "",
-        title: "",
-      id: "",
+      uploadImgServer,
+      title: "",
+      postContent: "",
+      activityId: "",
+      imgUrl: "#",
+      id:'',
+      detail:'',
 
     });
 
 
-    const onSubmit = async (values) => {
-        await Post({
+    onMounted(() => {
+      init();
+    });
 
-          title: values.title,
-          activityId: state.id,
-          imgUrl: values.imgUrl,
-          postContent: values.postContent,
-        });
-        Toast.success("发布成功");
-      }
+    const init = async (values) => {
+
+      title.value = values.title;
+      postContent.value = values.postContent;
+      // state.selectServiceId = state.service.normalServiceId;
+
+    };
     const handleBeforeUpload = (file) => {
       const sufix = file.name.split('.')[1] || ''
       if (!['jpg', 'jpeg', 'png'].includes(sufix)) {
@@ -122,23 +129,153 @@ export default {
     }
     // 上传图片
     const handleUrlSuccess = (val) => {
-      state.ruleForm.url = val.data || ''
+      state.imgUrl = val.data || ''
+    }
+
+
+
+
+    // 提交登录或注册表单
+    const onSubmit = async () => {
+      const { id } = route.query;
+      await Post({
+        title: title.value,
+        postContent: postContent.value,
+        activityId: id,
+        imgUrl:state.imgUrl,
+
+      });
+
+      Toast.success("提交成功");
     }
     return {
       ...toRefs(state),
-      formRef,
-      onSubmit,
       handleBeforeUpload,
+      onSubmit,
       handleUrlSuccess,
-
     };
   },
+
+  data() {
+    return {
+      fileList: [],//默认是一个空数组
+      imageData: {},
+      isShow: false,
+      showList: false,
+    };
+  },
+
+  methods:{
+
+
+    uploadImg(file){
+      console.log(file);
+      let formData = new FormData();
+      formData.append("file", file.file);
+      axios.post("/mall/a/upload/file",formData)       //填写url地址
+          .then(() => {
+
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+    },
+  }
+  // methods: {
+  //   //图片change事件
+  //   changeImg () {
+  //     // 上传图片事件
+  //     var files = this.$refs.input.files
+  //     var that = this
+  //     function readAndPreview (file) {
+  //       if (file !== undefined) {
+  //         if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
+  //           var reader = new FileReader()
+  //           reader.onload = function (e) {
+  //             // 避免重复上传同个图片
+  //             if (that.imgData.indexOf(e.target.result) === -1) {
+  //               that.imgData.push(e.target.result)
+  //               that.otherimg = that.imgData.pop() //每次展示最后一个上传的图片
+  //             } else {
+  //               Toast('已有该图片')
+  //             }
+  //           }
+  //           reader.readAsDataURL(file)
+  //         }
+  //       }
+  //     }
+  //     readAndPreview(files[0])
+  //     if (files.length === 0) {
+  //       return false
+  //     }
+  //     console.log(that.imgData)
+  //     that.uploadFile(files[0])  // 文件上传服务器
+  //   },
+  //   // 图片上传接口
+  //   uploadFile (file) {
+  //     this.formData = new FormData()
+  //     // 添加文件流
+  //     this.formData.append('files', file, file.name)
+  //     //添加接口的参数 看需求传或不传
+  //     this.formData.append('user_token', localStorage.getItem('user_token'))
+  //     this.formData.append('activityId', this.activityId)
+  //     this.axios.post('/mall/a/upload/file',
+  //     this.formData
+  //   ).then(res => {
+  //       if (res.code === 0) {
+  //         //返回图片的地址res.data
+  //         this.otherimg = res.data
+  //         Toast('上传成功')
+  //       }
+  //     })
+  //   },
+  //   upload () {
+  //     // 点击触发按钮
+  //     this.$refs.input.dispatchEvent(new MouseEvent('click'))
+  //   }
+  // },
+  //
+  //
+  //
+
+
+
+
 
 }
 </script>
 
 <style lang="less">
 @import '../common/style/mixin';
+.input-up {
+  padding: 0.26rem 0.18rem;
+}
+.input-up .upload {
+  width: 100%;
+  height: 200px;
+  border: 1px solid #f5f5f5;
+}
+.input-up .upload span {
+  display: block;
+  text-align: center;
+  font-size: 0.6rem;
+  color: #d8d8d8;
+}
+.input-up .uploads {
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 1px solid #f5f5f5;
+}
+.input-up .uploads img {
+  display: block;
+  width: 100%;
+  height: 1.4rem;
+}
+.input-up .upload p {
+  text-align: center;
+  font-size: 0.2rem;
+  color: #d8d8d8;
+}
 .cart-box {
   .cart-header {
     position: fixed;
@@ -177,3 +314,4 @@ export default {
   padding: 32px 17px;
 }
 </style>
+

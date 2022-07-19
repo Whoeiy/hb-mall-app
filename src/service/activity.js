@@ -17,3 +17,6 @@ export function getPostDetail(id) {
 export function Post(params) {
     return axios.post('/mall/a/post', params);
 }
+export function uploadImgServer(params) {
+    return axios.post('/mall/a/upload/file', { params });
+}
