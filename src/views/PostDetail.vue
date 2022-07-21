@@ -23,8 +23,8 @@
       <div style="font-size: 18px;float: right;padding-right: 20px"> {{ detail.likeCount }} </div>
 
 
-      <img v-if="detail.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
-      <img v-if="detail.isLiked == 1" src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
+      <img v-if="detail.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
+      <img v-else  src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="unLike">
 
     </div>
     </div>
@@ -41,7 +41,8 @@ import sHeader from "@/components/SimpleHeader";
 import {useRoute, useRouter} from "vue-router";
 
 import {nextTick, onMounted, reactive, toRefs} from "vue";
-import {getPostDetail} from "@/service/activity";
+import {getPostDetail,  likePost} from "@/service/activity";
+import {Toast} from "vant";
 
 export default {
   name: "PostDetail",
@@ -57,11 +58,13 @@ export default {
       detail: {
       },
       list:[],
+      likeStatus:'1',
     })
 
     onMounted(async () => {
       const { id } = route.query
       const { data } = await getPostDetail(id)
+
       state.detail = data
       state.list = state.list.concat(data);
     })
@@ -77,13 +80,44 @@ export default {
     }
 
 
+    const Like = async () => {
+      const { id } = route.query;
+      const {
+        data,
 
+      } = await likePost({ postId: id, likeStatus: state.likeStatus });
+      state.totalPage = data.totalPage;
+      state.postId=state.detail.postId;
+      state.detail.isLike='1';
+      state.detail.likeCount = state.detail.likeCount +1;
+      state.loading = false;
+      if (state.page >= data.totalPage) state.finished = true;
+      Toast.clear();
 
+    };
+
+    const unLike = async () => {
+      const { id } = route.query;
+      state.likestatus='0';
+      const {
+        data,
+
+      } = await likePost({ postId: id, likeStatus: 0 });
+      state.totalPage = data.totalPage;
+      state.postId=state.detail.postId;
+
+      state.detail.isLike='0';
+      state.detail.likeCount = state.detail.likeCount - 1;
+      state.loading = false;
+      if (state.page >= data.totalPage) state.finished = true;
+      Toast.clear();
+    };
 
     return {
       ...toRefs(state),
       goBack,
-
+      Like,
+      unLike,
     }
 },}
 </script>

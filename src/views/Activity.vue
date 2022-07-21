@@ -27,8 +27,8 @@
                <div style="font-size: 18px;float: right"> {{ item.likeCount }} </div>
 
 
-                <img v-if="item.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
-                  <img v-if="item.isLiked == 1" src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
+                <img v-if="item.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
+                  <img v-else src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
 
             </div>
             </div></div>
@@ -46,7 +46,7 @@
 import { reactive, toRefs, onMounted, onActivated } from "vue";
 import sHeader from "@/components/SimpleHeader";
 import {
-  getActivityDetail,  getPostList
+  getActivityDetail, getPostList, likePost
 } from "@/service/activity";
 import { Dialog, Toast } from "vant";
 import {useRoute, useRouter} from "vue-router";
@@ -73,6 +73,7 @@ export default {
       loading: false,
       finished: false,
       postId:"",
+      likeStatus:'1',
     });
 
     onMounted(() => {
@@ -140,6 +141,19 @@ state.postId=state.postlist.postId;
       }
       init()
     }
+    const Like = async () => {
+      const { id } = route.query;
+      const {
+        data,
+
+      } = await likePost({ postId: id, likeStatus: state.likeStatus });
+      state.totalPage = data.totalPage;
+      state.postId=state.detail.postId;
+      state.detail.isLike='1';
+      state.detail.likeCount = state.detail.likeCount +1;
+      state.loading = false;
+      if (state.page >= data.totalPage) state.finished = true;
+    };
 
     const onRefresh = () => {
       state.refreshing = true
@@ -162,7 +176,8 @@ state.postId=state.postlist.postId;
       loadData,
       goToDetail,
       onLoad,
-      onRefresh
+      onRefresh,
+      Like
 
     };
   },
