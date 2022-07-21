@@ -99,8 +99,8 @@ export default {
     }
 
     const count = computed(() => {
-      console.log(111, store.state.count)
-      return store.state.count
+      // console.log(111, store.state)
+      return store.state.cartCount
     })
 
     return {

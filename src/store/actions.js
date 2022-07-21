@@ -3,9 +3,15 @@ import { getCart } from '../service/cart'
 
 export default {
   async updateCart(ctx) {
-    const { data } = await getCart()
-    ctx.commit('addCart', {
-      count: data.cartItems.length || 0
-    })
+    const res = await getCart()
+    if(res.data == null) {
+      ctx.commit('addCart', {
+        count: 0
+      })
+    } else {
+      ctx.commit('addCart', {
+        count: res.data.cartItems.length
+      })
+    }
   }
 }

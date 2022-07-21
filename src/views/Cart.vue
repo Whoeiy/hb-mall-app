@@ -119,9 +119,12 @@ export default {
     const init = async () => {
       Toast.loading({ message: '加载中...', forbidClick: true });
       const { data } = await getCart()
-      state.list = data.cartItems
-      state.result = data.map(item => item.giftId)
-      Toast.clear()
+      console.log(data)
+      if (data != null) {
+        state.list = data.cartItems
+        // state.result = data.map(item => item.giftId)
+        Toast.clear()
+      }
     }
 
     const total = computed(() => {
