@@ -26,13 +26,13 @@
 <!--          <li>常见问题</li>-->
 <!--        </ul>-->
         <div class="product-content" v-html="detail.giftIntro || ''"></div>
-        <van-button round style="color: #F63515; float:right ;margin-right: 8px" @click="recommend()" >一键推荐 </van-button>
-      </div>
+         </div>
     </div>
     <van-action-bar>
       <van-action-bar-icon icon="chat-o" text="客服" />
       <van-action-bar-icon icon="cart-o" :badge="!count ? '' : count" @click="goTo()" text="购物车" />
       <van-action-bar-button type="warning" @click="handleAddCart" text="加入购物车" />
+      <van-action-bar-button type="warning" @click="recommend()" text="一键推荐" />
       <van-action-bar-button type="danger" @click="goToCart" text="立即购买" />
     </van-action-bar>
   </div>
