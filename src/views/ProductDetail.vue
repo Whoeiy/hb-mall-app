@@ -95,6 +95,7 @@ export default {
     const  recommend = async () =>{
   const { id } = route.params
  await Recommend(id)
+      Toast.success('推荐成功');
     }
 
     const count = computed(() => {
