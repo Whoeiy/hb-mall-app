@@ -29,3 +29,7 @@ export function updateService(params) {
   return axios.put('/mall/a/settle',  params );
 }
 
+
+export function Recommend(id) {
+  return axios.put(`/mall/a/gift/recommend/${id}`);
+}

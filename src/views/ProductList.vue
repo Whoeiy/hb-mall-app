@@ -14,11 +14,10 @@
         </div>
         <span class="search-btn" @click="getSearch">搜索</span>
       </header>
-<!--      <van-tabs type="card" color="#1baeae" @click="changeTab" >-->
-<!--        <van-tab title="推荐" name=""></van-tab>-->
-<!--        <van-tab title="新品" name="new"></van-tab>-->
-<!--        <van-tab title="价格" name="price"></van-tab>-->
-<!--      </van-tabs>-->
+      <div style="padding-left: 30px" v-show="true">
+        <a herf="" style="cursor: default;padding-right: 10px">历史记录</a>
+        <a style="padding-right: 10px; font-size: 14px; " v-for="(item,index) in brief" :key="index" >{{item}}</a>
+      </div>
     </div>
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh" class="product-list-refresh">
@@ -51,9 +50,35 @@
 import { reactive, toRefs } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { search } from '@/service/good'
+import {Toast} from "vant";
+
+
 export default {
+
+  methods: {
+    search(){
+      if(this.keyword!==''){
+        let val = this.keyword.trim()
+        if(!val){
+          Toast.fail('请输入')
+          return
+        }
+        if(this.brief.indexOf(val)===-1){
+          this.brief.unshift(val)
+          this.brief=this.brief.slice(0,5)
+          localStorage.setItem('history',JSON.stringify(this.brief))
+        }
+      }
+    }
+  },
   header: {
     'Content-Type': 'text/html; charset=utf-8'
+  },
+  mounted() {
+    if (JSON.parse(localStorage.getItem("history"))) {
+      this.brief = JSON.parse(localStorage.getItem("history"))
+
+    }
   },
   setup() {
     const route = useRoute()
@@ -102,6 +127,7 @@ export default {
     }
 
     const getSearch = () => {
+
       onRefresh()
     }
 

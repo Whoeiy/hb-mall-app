@@ -26,6 +26,7 @@
 <!--          <li>常见问题</li>-->
 <!--        </ul>-->
         <div class="product-content" v-html="detail.giftIntro || ''"></div>
+        <van-button round style="color: #F63515; float:right ;margin-right: 8px" @click="recommend()" >一键推荐 </van-button>
       </div>
     </div>
     <van-action-bar>
@@ -42,7 +43,7 @@ import { reactive, onMounted, computed, toRefs, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { getDetail } from '@/service/good'
-import { addCart } from '@/service/cart'
+import {addCart, Recommend} from '@/service/cart'
 import sHeader from '@/components/SimpleHeader'
 import { Toast } from 'vant'
 // import { prefix } from '@/common/js/utils'
@@ -91,6 +92,10 @@ export default {
       store.dispatch('updateCart')
       router.push({ path: '/cart' })
     }
+    const  recommend = async () =>{
+  const { id } = route.params
+ await Recommend(id)
+    }
 
     const count = computed(() => {
       console.log(111, store.state.count)
@@ -103,7 +108,8 @@ export default {
       goTo,
       handleAddCart,
       goToCart,
-      count
+      count,
+      recommend
     }
   },
   components: {
