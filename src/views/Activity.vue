@@ -2,26 +2,49 @@
   <div class="cart-box">
     <s-header :name="'活动详情'" :noback="faulse"></s-header>
     <div class="detail-content">
-      <div style="margin:10px 10px 10px 10px">
-        <img style="width:100%;border-radius:10px;border:10px" v-if="detail.posterUrl" :src="$filters.prefix(detail.posterUrl)"/>
+      <div style="margin: 10px 10px 10px 10px">
+        <img
+          style="width: 100%; border-radius: 10px; border: 10px"
+          v-if="detail.posterUrl"
+          :src="$filters.prefix(detail.posterUrl)"
+        />
       </div>
-      <div style="margin:10px 10px 10px 10px">
-        <div style="font-size:18px;font-weight:bold;text-indent:2px;">
-          {{ detail.activityDetail || '' }}
+      <div style="margin: 10px 10px 10px 10px">
+        <div style="font-size: 18px; font-weight: bold; text-indent: 2px">
+          {{ detail.activityDetail || "" }}
         </div>
-        <div style="margin:10px 10px 5px 5px">
-          <span style="font-weight: bold">活动时间：{{ formatDate( detail.startTime) || '' }}-{{ formatDate( detail.endTime) || '' }}</span>
-         <br>
-          <span style="font-weight: bold" v-for="item in list" :key="item">优惠券：{{ item.coupon.couponName}}</span><br>
-          <sapn style="color: chocolate; font-size: 14px">>>排行榜</sapn>
+        <div style="margin: 10px 10px 5px 5px">
+          <span style="font-weight: bold"
+            >活动时间：{{ formatDate(detail.startTime) || "" }}-{{
+              formatDate(detail.endTime) || ""
+            }}</span
+          >
+          <br />
+          <span style="font-weight: bold" v-for="item in list" :key="item"
+            >优惠券：{{ item.coupon.couponName }}</span
+          ><br />
+          <span
+            style="color: chocolate; font-size: 14px"
+            @click="goToRanking(detail.activityId)"
+            >>>排行榜</span
+          >
         </div>
       </div>
       <div class="good">
         <header class="good-header">帖子</header>
         <van-skeleton title :row="3" :loading="loading">
           <div class="good-box">
-            <div class="good-item" v-for="item in postdetail" :key="item.postId" @click="goToDetail(item.postId)">
-              <img style="border-radius:2px;" :src="$filters.prefix(item.imgUrl)" alt="帖子">
+            <div
+              class="good-item"
+              v-for="item in postdetail"
+              :key="item.postId"
+              @click="goToDetail(item.postId)"
+            >
+              <img
+                style="border-radius: 2px"
+                :src="$filters.prefix(item.imgUrl)"
+                alt="帖子"
+              />
               <div class="good-desc">
                 <div class="title">{{ item.title }}By{{ item.customerName }} </div>
                <div style="font-size: 18px;float: right"> {{ item.likeCount }} </div>
@@ -30,16 +53,32 @@
                 <img v-if="item.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
                   <img v-else src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
 
+
+                <img
+                  v-if="item.isLiked == 0"
+                  src="../assets/heart1.jpg"
+                  style="width: 18px; float: right; margin: 3px 8px 0px 0px"
+                />
+                <img
+                  v-if="item.isLiked == 1"
+                  src="../assets/heart2.jpg"
+                  style="width: 18px; float: right; margin: 3px 8px 0px 0px"
+                />
+              </div>
             </div>
-            </div></div>
+          </div>
         </van-skeleton>
 
-    <van-action-bar>
-
-      <van-action-bar-button type="warning" @click="goTo(detail.activityId)" text="发布我的帖子" />
-
-    </van-action-bar>
-      </div></div></div>
+        <van-action-bar>
+          <van-action-bar-button
+            type="warning"
+            @click="goTo(detail.activityId)"
+            text="发布我的帖子"
+          />
+        </van-action-bar>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -48,8 +87,10 @@ import sHeader from "@/components/SimpleHeader";
 import {
   getActivityDetail, getPostList, likePost
 } from "@/service/activity";
+
+
 import { Dialog, Toast } from "vant";
-import {useRoute, useRouter} from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 export default {
   name: "Activity",
   components: {
@@ -60,14 +101,14 @@ export default {
     const router = useRouter();
     const state = reactive({
       detail: {},
-      list:[],
-      postlist:[],
-      postdetail:[],
+      list: [],
+      postlist: [],
+      postdetail: [],
       showPay: false,
       page: 1,
       pageSize: 10,
       totalPage: 0,
-      activityId:'',
+      activityId: "",
       seclectActive: false,
       refreshing: false,
       loading: false,
@@ -98,10 +139,12 @@ export default {
       state.list = state.list.concat(data);
 
       Toast.clear();
-
     };
     const goTo = (id) => {
       router.push({ path: "/post", query: { id } });
+    };
+    const goToRanking = (id) => {
+      router.push({ path: "/ranking", query: { id } });
     };
 
     const loadData = async () => {
@@ -109,12 +152,16 @@ export default {
       const {
         data,
         data: { list },
-      } = await getPostList({ pageNum: state.page, pageSize: state.pageSize,activityId:id });
+      } = await getPostList({
+        pageNum: state.page,
+        pageSize: state.pageSize,
+        activityId: id,
+      });
 
       state.postlist = state.postlist.concat(data);
       state.postdetail = state.postdetail.concat(list);
       state.totalPage = data.totalPage;
-state.postId=state.postlist.postId;
+      state.postId = state.postlist.postId;
       state.loading = false;
       if (state.page >= data.totalPage) state.finished = true;
     };
@@ -129,11 +176,11 @@ state.postId=state.postlist.postId;
       let d = date.getDate();
       d = d < 10 ? "0" + d : d;
 
-      return y + "-" + MM + "-" + d + " " ;
+      return y + "-" + MM + "-" + d + " ";
     };
     const onLoad = () => {
       if (!state.refreshing && state.page < state.totalPage) {
-        state.page = state.page + 1
+        state.page = state.page + 1;
       }
       if (state.refreshing) {
         state.productList = [];
@@ -153,20 +200,20 @@ state.postId=state.postlist.postId;
       state.detail.likeCount = state.detail.likeCount +1;
       state.loading = false;
       if (state.page >= data.totalPage) state.finished = true;
+
     };
 
     const onRefresh = () => {
-      state.refreshing = true
-      state.finished = false
-      state.loading = true
-      state.page = 1
-      onLoad()
-    }
-
+      state.refreshing = true;
+      state.finished = false;
+      state.loading = true;
+      state.page = 1;
+      onLoad();
+    };
 
     const goToDetail = (id) => {
-      router.push({ path: "/postdetail", query: { id } })
-    }
+      router.push({ path: "/postdetail", query: { id } });
+    };
 
     return {
       ...toRefs(state),
@@ -177,7 +224,8 @@ state.postId=state.postlist.postId;
       goToDetail,
       onLoad,
       onRefresh,
-      Like
+      Like,
+      goToRanking
 
     };
   },
@@ -185,7 +233,7 @@ state.postId=state.postlist.postId;
 </script>
 
 <style lang="less">
-@import '../common/style/mixin';
+@import "../common/style/mixin";
 .cart-box {
   .cart-header {
     position: fixed;
@@ -216,7 +264,6 @@ state.postId=state.postlist.postId;
       justify-content: center;
     }
     .van-pull-refresh__head {
-
     }
     .order-item-box {
       margin: 20px 10px;
@@ -225,12 +272,10 @@ state.postId=state.postlist.postId;
         padding: 10px 20px 0 20px;
         display: flex;
         justify-content: space-between;
-
       }
       .van-card {
         background-color: #fff;
         margin-top: 0;
-
       }
     }
   }
@@ -265,7 +310,7 @@ state.postId=state.postlist.postId;
         }
       }
     }
-    .product-img{
+    .product-img {
       padding: 10px 10px;
       width: 100%;
     }
@@ -285,7 +330,7 @@ state.postId=state.postlist.postId;
       .product-price {
         .fj();
         span:nth-child(1) {
-          color: #F63515;
+          color: #f63515;
           font-size: 22px;
         }
         span:nth-child(2) {
@@ -322,10 +367,10 @@ state.postId=state.postlist.postId;
     }
   }
   .van-action-bar-button--warning {
-    background: linear-gradient(to right,@primary, #FF6B01)
+    background: linear-gradient(to right, @primary, #ff6b01);
   }
   .van-action-bar-button--danger {
-    background: linear-gradient(to right, @primary, #FF6B01)
+    background: linear-gradient(to right, @primary, #ff6b01);
   }
 }
 .good {
@@ -334,7 +379,7 @@ state.postId=state.postlist.postId;
     height: 50px;
     line-height: 50px;
     text-align: center;
-    color: #FF6B01;
+    color: #ff6b01;
     font-size: 16px;
     font-weight: 500;
   }
@@ -345,7 +390,7 @@ state.postId=state.postlist.postId;
     .good-item {
       box-sizing: border-box;
       width: 50%;
-      border-bottom: 1PX solid #e9e9e9;
+      border-bottom: 1px solid #e9e9e9;
       padding: 10px 10px;
       img {
         display: block;
@@ -363,5 +408,8 @@ state.postId=state.postlist.postId;
           color: @primary;
           text-align: right;
         }
-      }}}}
+      }
+    }
+  }
+}
 </style>

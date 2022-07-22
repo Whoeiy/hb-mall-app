@@ -32,10 +32,6 @@
         <span>优惠券管理</span>
         <van-icon name="arrow" />
       </li>
-      <li @click="goTo('/about')">
-        <span>关于我们</span>
-        <van-icon name="arrow" />
-      </li>
       <van-button round block class="button" @click="logOut()">
         <span>退出登录</span>
       </van-button>

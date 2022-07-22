@@ -23,3 +23,9 @@ export function uploadImgServer(params) {
 export function likePost(params) {
     return axios.post('/mall/a/post/like', params);
 }
+export function getRankingList(id) {
+    return axios.get(`/mall/a/activity/${id}/chart`);
+}
+export function getCoupon(params) {
+    return axios.post('/mall/a/coupon/send',params);
+}

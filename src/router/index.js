@@ -216,7 +216,13 @@ const router = createRouter({
       path:'/private-custom-add',
       name:'private-custom-add',
       component: () => import(/* webpackChunkName: "custom-add" */ '@/views/privateCustom.vue'),
-    }
+    },
+    {
+      path:'/ranking',
+      name:'ranking',
+      component: () => import(/* webpackChunkName: "custom-add" */ '@/views/ranking.vue'),
+    },
+
   ]
 })
 
