@@ -29,7 +29,7 @@
          </div>
     </div>
     <van-action-bar>
-      <van-action-bar-icon icon="chat-o" text="客服" />
+      <!-- <van-action-bar-icon icon="chat-o" text="客服" /> -->
       <van-action-bar-icon icon="cart-o" :badge="!count ? '' : count" @click="goTo()" text="购物车" />
       <van-action-bar-button type="warning" @click="handleAddCart" text="加入购物车" />
       <van-action-bar-button type="warning" @click="recommend()" text="一键推荐" />
