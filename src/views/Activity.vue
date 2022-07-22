@@ -53,17 +53,6 @@
                 <img v-if="item.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
                   <img v-else src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
 
-
-                <img
-                  v-if="item.isLiked == 0"
-                  src="../assets/heart1.jpg"
-                  style="width: 18px; float: right; margin: 3px 8px 0px 0px"
-                />
-                <img
-                  v-if="item.isLiked == 1"
-                  src="../assets/heart2.jpg"
-                  style="width: 18px; float: right; margin: 3px 8px 0px 0px"
-                />
               </div>
             </div>
           </div>
