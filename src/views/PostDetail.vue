@@ -20,11 +20,11 @@
 
         <span>{{ detail.postContent || '' }}</span>
       </div>
-      <div style="font-size: 18px;float: right;padding-right: 20px"> {{ detail.likeCount }} </div>
+        <div style="font-size: 18px;float: right;padding-right: 20px"> {{ detail.likeCount }} </div>
 
 
-      <img v-if="detail.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
-      <img v-else  src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="unLike">
+        <img v-if="detail.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like" :key="mykey">
+        <img v-else  src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="unLike">
 
     </div>
     </div>
@@ -93,7 +93,7 @@ export default {
       state.loading = false;
       if (state.page >= data.totalPage) state.finished = true;
       Toast.clear();
-
+      router.go(0);
     };
 
     const unLike = async () => {
@@ -111,6 +111,7 @@ export default {
       state.loading = false;
       if (state.page >= data.totalPage) state.finished = true;
       Toast.clear();
+      router.go(0)
     };
 
     return {
