@@ -76,12 +76,12 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      productList: [],
+      productList: {},
       totalPage: 0,
       page: 1,
       sortBy:'3',
       pageSize: 10,
-      searchType:'3',
+
     })
 
     // onMounted(() => {
@@ -104,7 +104,8 @@ export default {
           keyword: state.keyword,
           sortBy: state.sortBy,
           pageNum: state.page,
-          pageSize: state.pageSize
+          pageSize: state.pageSize,
+          searchType:3,
         })
 
         state.productList = state.productList.concat(data)
@@ -117,7 +118,8 @@ export default {
           keyword: labelName,
           sortBy: state.sortBy,
           pageNum: state.page,
-          pageSize: state.pageSize
+          pageSize: state.pageSize,
+          searchType:2,
         })
 
         state.productList = state.productList.concat(data)
@@ -130,7 +132,8 @@ export default {
           keyword: categoryName,
           sortBy: state.sortBy,
           pageNum: state.page,
-          pageSize: state.pageSize
+          pageSize: state.pageSize,
+          searchType:1,
         })
 
         state.productList = state.productList.concat(data)
