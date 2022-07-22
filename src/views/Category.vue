@@ -97,8 +97,8 @@ export default {
    }
 
    const selectProduct = (item) => {
-     console.log('item', item.categoryId)
-     router.push({ path: '/product-list', query: { categoryId: item.categoryId } })
+     console.log('item', item.categoryName)
+     router.push({ path: '/product-list', query: { categoryName: item.categoryName } })
    }
    return {
      ...toRefs(state),
