@@ -46,11 +46,11 @@
                 alt="帖子"
               />
               <div class="good-desc">
-                <div class="title">{{ item.title }}By{{ item.customerName }} </div>
+                <!-- <div class="title">{{ item.title }}By{{ item.customerName }} </div> -->
+                <div class="title">{{ item.title }}</div>
+                <div class="author">{{ item.customerName }}</div>
                <div style="font-size: 18px;float: right"> {{ item.likeCount }} </div>
-
-
-                <img v-if="item.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
+                 <img v-if="item.isLiked == 0" src="../assets/heart1.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px " @click="Like">
                   <img v-else src="../assets/heart2.jpg" style="width: 18px ; float: right;margin: 3px 8px 0px 0px ">
 
               </div>
@@ -392,6 +392,11 @@ export default {
         padding: 10px 0;
         .title {
           color: #222333;
+          font-weight: bold;
+        }
+        .author {
+          color: #333;
+          margin-top: 5px;
         }
         .price {
           color: @primary;
