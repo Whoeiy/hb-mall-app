@@ -109,6 +109,7 @@ export default {
         })
 
         state.productList = state.productList.concat(data.list)
+        // state.productList = data.list
         state.totalPage = data.totalPage
         state.loading = false;
         if (state.page >= data.totalPage) state.finished = true
@@ -122,7 +123,8 @@ export default {
           searchType:2,
         })
 
-        state.productList = state.productList.concat(data.list)
+        // state.productList = state.productList.push(data.list)
+        state.productList = data.list
         state.totalPage = data.totalPage
         state.loading = false;
         if (state.page >= data.totalPage) state.finished = true
@@ -136,7 +138,7 @@ export default {
           searchType:1,
         })
 
-        state.productList = state.productList.concat(data.list)
+        state.productList = data.list
         state.totalPage = data.totalPage
         state.loading = false;
         if (state.page >= data.totalPage) state.finished = true
