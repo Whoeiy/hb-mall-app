@@ -85,7 +85,7 @@ import sHeader from "@/components/SimpleHeader";
 import { onMounted, reactive, ref, toRefs } from "vue";
 import { Toast } from "vant";
 import { Post } from "@/service/activity";
-import { useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { uploadImgServer } from "@/service/activity";
 import axios from "../utils/axios";
 
@@ -97,6 +97,7 @@ export default {
 
   setup() {
     const route = useRoute();
+    const router = useRouter();
     const title = ref("");
     const postContent = ref("");
     const state = reactive({
@@ -141,6 +142,7 @@ export default {
       });
 
       Toast.success("提交成功");
+      router.back();
     };
 
     const afterRead = (file) => {

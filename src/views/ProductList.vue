@@ -14,10 +14,20 @@
         </div>
         <span class="search-btn" @click="getSearch">搜索</span>
       </header>
-      <div style="padding-left: 30px" v-show="true">
-        <a herf="" style="cursor: default;padding-right: 10px">历史记录</a>
-        <a style="padding-right: 10px; font-size: 14px; " v-for="(item,index) in brief" :key="index" >{{item}}</a>
-      </div>
+<!--      <div style="padding-left: 30px" v-show="true">-->
+<!--        <a herf="" style="cursor: default;padding-right: 10px">历史记录</a>-->
+<!--        <a style="padding-right: 10px; font-size: 14px; " v-for="(item,index) in brief" :key="index" >{{item}}</a>-->
+<!--      </div>-->
+
+
+
+
+
+      <van-tabs type="card" color="#FF3001" @click="changeTab" >
+        <van-tab title="价格升序" name="3"></van-tab>
+        <van-tab title="最新礼品" name="1"></van-tab>
+        <van-tab title="价格降序" name="2"></van-tab>
+      </van-tabs>
     </div>
     <div class="content">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh" class="product-list-refresh">
@@ -55,31 +65,6 @@ import {Toast} from "vant";
 
 export default {
 
-  methods: {
-    search(){
-      if(this.keyword!==''){
-        let val = this.keyword.trim()
-        if(!val){
-          Toast.fail('请输入')
-          return
-        }
-        if(this.brief.indexOf(val)===-1){
-          this.brief.unshift(val)
-          this.brief=this.brief.slice(0,5)
-          localStorage.setItem('history',JSON.stringify(this.brief))
-        }
-      }
-    }
-  },
-  header: {
-    'Content-Type': 'text/html; charset=utf-8'
-  },
-  mounted() {
-    if (JSON.parse(localStorage.getItem("history"))) {
-      this.brief = JSON.parse(localStorage.getItem("history"))
-
-    }
-  },
   setup() {
     const route = useRoute()
     const router = useRouter()
@@ -91,10 +76,12 @@ export default {
       list: [],
       loading: false,
       finished: false,
-      productList: [],
+      productList: {},
       totalPage: 0,
       page: 1,
-      orderBy: ''
+      sortBy:'3',
+      pageSize: 10,
+
     })
 
     // onMounted(() => {
@@ -102,20 +89,61 @@ export default {
     // })
 
     const init = async () => {
-      const { categoryId } = route.query
-      if (!categoryId && !state.keyword) {
-        // Toast.fail('请输入关键词')
+      const { categoryName } = route.query
+      const { labelName }=route.query
+      if (!categoryName && !state.keyword && !labelName) {
+        Toast.fail('请输入关键词')
         state.finished = true
         state.loading = false;
         return
       }
-      // const { data, data: {list} } = await search({ keyword: state.keyword})
-      const { data } = await search({ keyword: state.keyword})
-      
-      state.productList = state.productList.concat(data)
-      state.totalPage = data.totalPage
-      state.loading = false;
-      if (state.page >= data.totalPage) state.finished = true
+      if(!categoryName && !labelName) {
+
+        // const { data, data: {list} } = await search({ keyword: state.keyword})
+        const {data} = await search({
+          keyword: state.keyword,
+          sortBy: state.sortBy,
+          pageNum: state.page,
+          pageSize: state.pageSize,
+          searchType:3,
+        })
+
+        state.productList = state.productList.concat(data.list)
+        // state.productList = data.list
+        state.totalPage = data.totalPage
+        state.loading = false;
+        if (state.page >= data.totalPage) state.finished = true
+      }
+      else if(!categoryName && labelName!==""){
+        const {data} = await search({
+          keyword: labelName,
+          sortBy: state.sortBy,
+          pageNum: state.page,
+          pageSize: state.pageSize,
+          searchType:2,
+        })
+
+        // state.productList = state.productList.push(data.list)
+        state.productList = data.list
+        state.totalPage = data.totalPage
+        state.loading = false;
+        if (state.page >= data.totalPage) state.finished = true
+      }
+      else {
+        const {data} = await search({
+          keyword: categoryName,
+          sortBy: state.sortBy,
+          pageNum: state.page,
+          pageSize: state.pageSize,
+          searchType:1,
+        })
+
+        state.productList = data.list
+        state.totalPage = data.totalPage
+        state.loading = false;
+        if (state.page >= data.totalPage) state.finished = true
+      }
+
     }
 
     const goBack = () => {
@@ -142,6 +170,12 @@ export default {
       init()
     }
 
+    const changeTab = (name) => {
+      console.log('name', name)
+      state.sortBy = name
+      onRefresh()
+    }
+
     const onRefresh = () => {
       state.refreshing = true
       state.finished = false
@@ -150,11 +184,7 @@ export default {
       onLoad()
     }
 
-    const changeTab = (name) => {
-      console.log('name', name)
-      state.orderBy = name
-      onRefresh()
-    }
+
 
     return {
       ...toRefs(state),
@@ -163,7 +193,7 @@ export default {
       getSearch,
       changeTab,
       onLoad,
-      onRefresh
+      onRefresh,
     }
   }
 }

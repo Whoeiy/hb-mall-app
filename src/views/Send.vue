@@ -89,7 +89,7 @@ export default {
 
     const selectProduct = (item) => {
       console.log('item', item.labelId)
-      router.push({ path: '/product-list', query: { labelId: item.labelId } })
+      router.push({ path: '/product-list', query: { labelName: item.labelName } })
     }
     return {
       ...toRefs(state),
