@@ -6,13 +6,6 @@
       :back="from == 'create-order' ? '' : '/user'"
     ></s-header>
     <div class="address-item">
-      <!-- <van-card
-        v-for="one in list.data"
-        :key="one.itemId"
-        :price="one.couponPrice"
-        :desc="one.couponTypeName"
-        :title="one.couponName"
-      /> -->
       <van-address-list
         class="items"
         v-if="from != 'mine'"

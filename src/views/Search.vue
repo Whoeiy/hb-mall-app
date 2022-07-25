@@ -34,11 +34,6 @@
 </template>
 
 <script>
-//
-//// import {Toast} from "vant";
-//import {useRoute, useRouter} from "vue-router";
-//import {reactive, toRefs} from "vue";
-//import {search} from "@/service/good";
 
 
 export default {
@@ -103,38 +98,6 @@ export default {
   },
 
 
-//   setup() {
-//     const route = useRoute()
-//     const router = useRouter()
-//     const state = reactive({
-//       keyword: route.query.keyword || '',
-//       list: [],
-//       loading: false,
-//       finished: false,
-//       productList: [],
-//       totalPage: 0,
-//       page: 1,
-//
-//     })
-//
-//
-//
-//     const goBack = () => {
-//       router.go(-1)
-//     }
-//     const goToSearch = async () => {
-//       await search({ keyword: state.keyword })
-//       // store.dispatch('updateCart')
-//       router.push({ path: '/product-list' })
-//     }
-//
-//
-//     return {
-//       ...toRefs(state),
-//       goBack,
-//       goToSearch
-//     }
-//   }
 }
 
 </script>

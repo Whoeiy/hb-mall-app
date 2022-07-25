@@ -1,4 +1,8 @@
-# 运行方法
+# hb-mall-app
+Front-end of Mall Application in Heartbeat 365 Platform
 
-- yarn install
-- yarn run dev
+# How the run this project
+```
+yarn install
+yarn run serve
+```

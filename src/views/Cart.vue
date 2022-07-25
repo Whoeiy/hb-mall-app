@@ -27,20 +27,6 @@
                     @change="onChange"
                     @minus="onMinus(item.count)"
                 />
-<!--               <el-button style=" border: 2px solid #FF3001;width: 25px;text-align: center;heigh:25px;font-size: 20px" @click="onChange(index)">+</el-button>-->
-<!--                <el-button style="font-size: 20px;text-align: center;padding-top: 2px">{{ item.count }}</el-button>-->
-<!--                <el-button style=" border: 2px solid #FF3001;width: 25px;text-align: center;heigh:25px;font-size: 20px" @click="onChange(index)">-</el-button>-->
-<!--                <van-stepper-->
-<!--                  integer-->
-<!--                  :min="0"-->
-<!--                  :max="10"-->
-<!--                  :model-value="item.count"-->
-<!--                  :v-model="item.count"-->
-<!--                  :name="item.giftId"-->
-<!--                  async-change:true-->
-<!--                  @plus="onChange(item.count)"-->
-<!--                  @minus="onMinus"-->
-<!--                />-->
                 <div >
 
                 </div>

@@ -14,10 +14,6 @@
         </div>
         <span class="search-btn" @click="getSearch">搜索</span>
       </header>
-<!--      <div style="padding-left: 30px" v-show="true">-->
-<!--        <a herf="" style="cursor: default;padding-right: 10px">历史记录</a>-->
-<!--        <a style="padding-right: 10px; font-size: 14px; " v-for="(item,index) in brief" :key="index" >{{item}}</a>-->
-<!--      </div>-->
 
 
 

@@ -188,62 +188,6 @@ export default {
         });
     },
   },
-  // methods: {
-  //   //图片change事件
-  //   changeImg () {
-  //     // 上传图片事件
-  //     var files = this.$refs.input.files
-  //     var that = this
-  //     function readAndPreview (file) {
-  //       if (file !== undefined) {
-  //         if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-  //           var reader = new FileReader()
-  //           reader.onload = function (e) {
-  //             // 避免重复上传同个图片
-  //             if (that.imgData.indexOf(e.target.result) === -1) {
-  //               that.imgData.push(e.target.result)
-  //               that.otherimg = that.imgData.pop() //每次展示最后一个上传的图片
-  //             } else {
-  //               Toast('已有该图片')
-  //             }
-  //           }
-  //           reader.readAsDataURL(file)
-  //         }
-  //       }
-  //     }
-  //     readAndPreview(files[0])
-  //     if (files.length === 0) {
-  //       return false
-  //     }
-  //     console.log(that.imgData)
-  //     that.uploadFile(files[0])  // 文件上传服务器
-  //   },
-  //   // 图片上传接口
-  //   uploadFile (file) {
-  //     this.formData = new FormData()
-  //     // 添加文件流
-  //     this.formData.append('files', file, file.name)
-  //     //添加接口的参数 看需求传或不传
-  //     this.formData.append('user_token', localStorage.getItem('user_token'))
-  //     this.formData.append('activityId', this.activityId)
-  //     this.axios.post('/mall/a/upload/file',
-  //     this.formData
-  //   ).then(res => {
-  //       if (res.code === 0) {
-  //         //返回图片的地址res.data
-  //         this.otherimg = res.data
-  //         Toast('上传成功')
-  //       }
-  //     })
-  //   },
-  //   upload () {
-  //     // 点击触发按钮
-  //     this.$refs.input.dispatchEvent(new MouseEvent('click'))
-  //   }
-  // },
-  //
-  //
-  //
 };
 </script>
 

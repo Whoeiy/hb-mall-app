@@ -4,7 +4,6 @@ import { Toast } from 'vant'
 import { setLocal } from '@/common/js/utils'
 import router from '../router'
 
-// axios.defaults.baseURL = process.env.NODE_ENV == 'development' ? 'http://101.133.131.175:8080/' : 'http://101.133.131.175:8080/'
 axios.defaults.baseURL = process.env.NODE_ENV == 'development' ? '/api' : '/api'
 axios.defaults.withCredentials = true
 axios.defaults.headers['X-Requested-With'] = 'XMLHttpRequest'

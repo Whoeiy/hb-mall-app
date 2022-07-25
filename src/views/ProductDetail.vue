@@ -19,12 +19,6 @@
         </div>
       </div>
       <div class="product-intro">
-<!--        <ul>-->
-<!--          <li>概述</li>-->
-<!--          <li>参数</li>-->
-<!--          <li>安装服务</li>-->
-<!--          <li>常见问题</li>-->
-<!--        </ul>-->
         <div class="product-content" v-html="detail.giftIntro || ''"></div>
          </div>
     </div>
